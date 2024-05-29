@@ -4,7 +4,7 @@ letak folder repo ni dalam folder htdocs yang kat dalam Xampp
 
 [Install Node...](https://nodejs.org/dist/v20.14.0/node-v20.14.0-x64.msi)
 
-bukak terminal dalam folder repo ni
+right click dalam folder repo ni, and then pilih `Open in Terminal`
 
 enter `npm install`
 
