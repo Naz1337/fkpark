@@ -6,10 +6,10 @@ letak folder repo ni dalam folder htdocs yang kat dalam Xampp
 
 right click dalam folder repo ni, and then pilih `Open in Terminal`
 
-enter `npm install`
+Tulis command berikut `npm install` dalam terminal korang then ENTER.
 
 lepas dah habis yang atas
 
-enter `npm run dev`
+Tulis command berikut `npm run dev` dalam terminal korang then ENTER.
 
 and then baru pergi ke [http://localhost/fkpark](http://localhost/fkpark)
