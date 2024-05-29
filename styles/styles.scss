@@ -1,0 +1,80 @@
+// Import all of Bootstrap's CSS
+@import "bootstrap/scss/bootstrap";
+
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+$text: #161b04;
+$background: #fdfefa;
+$primary: #badc25;
+$secondary: #86cbec;
+$accent: #5150e3;
+
+#navMenu {
+    background-color: rgba($secondary, 0.2);
+}
+
+body {
+    background-color: $background;
+    color: $text;
+}
+
+:root {
+    --fkpark-btn-hover-color: rgba(var(--bs-primary-rgb), 0.15);
+}
+
+
+.fkpark-body > * {
+    height: 100dvh;
+    overflow: scroll;
+}
+
+.mangkuk .ayam {
+    width: 100%;
+}
+
+.nav-button {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem;
+
+
+    text-align: start;
+
+    display: flex;
+
+    gap: 1rem;
+    border-radius: 0.25rem;
+}
+
+.nav-button:hover {
+    background-color: var(--fkpark-btn-hover-color);
+    color: var(--bs-primary);
+}
+
+.shape-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 99rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.shape-circle > img {
+    max-width: 100%;
+}
+
+.login-container {
+    width: 100dvw;
+    height: 100dvh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}

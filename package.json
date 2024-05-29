@@ -1,0 +1,21 @@
+{
+  "name": "fkpark",
+  "version": "1.0.0",
+  "description": "system with php innit",
+  "main": "none",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "author": "UMP studs",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "sass": "^1.77.2",
+    "vite": "^5.2.11",
+    "vite-plugin-live-reload": "^3.0.3"
+  }
+}
