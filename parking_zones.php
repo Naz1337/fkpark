@@ -1,4 +1,5 @@
 <?php
+
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
@@ -51,20 +52,9 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<form action='update_status.php' method='post'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                 echo "<select name='status'>";
-
-                // Define options array based on status value in the database
-                $options = [
-                    1 => 'Open',
-                    0 => 'Closed',
-                    2 => 'On Maintenance'
-                ];
-
-                // Loop through options array to display options
-                foreach ($options as $value => $label) {
-                    $selected = $row['status'] == $value ? " selected" : "";
-                    echo "<option value='$value' $selected>$label</option>";
-                }
-
+                echo "<option value='1'" . ($row['status'] == 1 ? " selected" : "") . ">Open</option>";
+                echo "<option value='0'" . ($row['status'] == 0 ? " selected" : "") . ">Closed</option>";
+                echo "<option value='2'" . ($row['status'] == 2 ? " selected" : "") . ">On Maintenance</option>";
                 echo "</select>";
                 echo "<input type='submit' class='update-button' value='Update'>";
                 echo "</form>";
@@ -78,7 +68,6 @@ require_once 'database_util.php'; // Include the database connection file
         ?>
     </tbody>
 </table>
-
 
 <br>
 <h2>Parking Space List</h2>
