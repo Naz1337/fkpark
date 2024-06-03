@@ -12,11 +12,11 @@ require_once 'database_util.php'; // Include the database connection file
         width: auto;
     }
 
-    table,
+    /* table,
     th,
     td {
         border: 1px solid black;
-    }
+    }  */
 
     th,
     td {
@@ -30,6 +30,12 @@ require_once 'database_util.php'; // Include the database connection file
 
     .add-button {
         margin-bottom: 10px;
+    }
+
+    .add-button:hover {
+        color: #fff;
+        background-color: #4caf50;
+        border-color: #269abc;
     }
 
     .update-button {
@@ -65,6 +71,17 @@ require_once 'database_util.php'; // Include the database connection file
         margin-right: 10px;
         /* Adjust the spacing as needed */
     }
+
+    .view-button {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #fff;
+    }
+
+    .view-button:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+    }
 </style>
 
 <h1>Parking Zone</h1><br>
@@ -72,7 +89,7 @@ require_once 'database_util.php'; // Include the database connection file
 <!-- Parking Zone List -->
 <h2>Parking Zone List</h2>
 <br>
-<table border="1">
+<table border="1" class="table table-bordered">
     <thead>
         <tr>
             <th>No.</th>
@@ -91,17 +108,21 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<tr>";
                 echo "<td>" . $counter++ . "</td>";
                 echo "<td>" . htmlspecialchars($row['name']) . "</td>";
+
                 echo "<td>";
-                echo "<form action='update_status.php' method='post'>";
+                // Update selection 
+                echo "<form action='update_parking_zones.php' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                 echo "<select name='status'>";
-                echo "<option value='open'" . ($row['status'] == 'Open' ? " selected" : "") . ">Open</option>";
-                echo "<option value='closed'" . ($row['status'] == 'Closed' ? " selected" : "") . ">Closed</option>";
-                echo "<option value='maintenance'" . ($row['status'] == 'Under maintenance' ? " selected" : "") . ">On Maintenance</option>";
+                echo "<option value='Open'" . ($row['status'] == 'Open' ? " selected" : "") . ">Open</option>";
+                echo "<option value='Closed'" . ($row['status'] == 'Closed' ? " selected" : "") . ">Closed</option>";
+                echo "<option value='Under maintenance'" . ($row['status'] == 'Under maintenance' ? " selected" : "") . ">Under maintenance</option>";
                 echo "</select>";
+                // Update button
                 echo "<input type='submit' class='update-button' value='Update'>";
                 echo "</form>";
                 echo "</td>";
+                
                 echo "</tr>";
             }
         } else {
@@ -116,9 +137,12 @@ require_once 'database_util.php'; // Include the database connection file
 <!-- Parking Space List -->
 <h2>Parking Space List</h2>
 <br>
+
 <!-- Add button -->
 <input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_space.php'"><br>
-<table border="1">
+
+<!-- Parking Space Table list -->
+<table border="1" class="table table-bordered">
     <thead>
         <tr>
             <th>No.</th>
@@ -158,19 +182,27 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<td class='action-buttons'>";
                 echo "<div class='edit-delete-buttons'>";
 
-                // Edit button
-                echo "<form action='update_parking_space.php' method='post' style='display:inline;'>";
+                // View button
+                echo "<form action='view_parking_space.php' method='get' style='display:inline;'>";
+                echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
+                echo "<input type='submit' class='btn btn-warning mr-2 update-button view-button' value='View'>";
+                echo "</form>";
+
+                // Edit button 
+                echo "<form action='update_parking_space.php' method='get' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
                 echo "<input type='submit' class='btn btn-warning mr-2 update-button' value='Edit'>";
                 echo "</form>";
 
-                // Delete button
+                // Delete button 
                 echo "<form action='delete_parking_space.php' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
                 echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
                 echo "</form>";
+
                 echo "</div>";
                 echo "</td>";
+
 
                 echo "</tr>";
             }

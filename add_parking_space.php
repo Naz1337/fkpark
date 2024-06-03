@@ -6,6 +6,12 @@ require_once 'database_util.php'; // Include the database connection file
 ?>
 
 <style>
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #4caf50;
+        border-color: #269abc;
+    }
+
     .btn-secondary:hover {
         background-color: #dc3545;
         /* Red color */

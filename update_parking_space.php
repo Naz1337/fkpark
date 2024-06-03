@@ -4,18 +4,18 @@ require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
 // Check if ID parameter is provided in the URL
-if(isset($_GET['id'])) {
+if (isset($_GET['id'])) {
     $space_id = $_GET['id'];
-    
+
     // Fetch existing parking space data
     $sql_fetch_space = "SELECT zone_id, name, is_available FROM parking_spaces WHERE id = ?";
     $stmt_fetch_space = $conn->prepare($sql_fetch_space);
     $stmt_fetch_space->bind_param("i", $space_id);
     $stmt_fetch_space->execute();
     $result_fetch_space = $stmt_fetch_space->get_result();
-    
+
     // Check if parking space exists
-    if($result_fetch_space->num_rows > 0) {
+    if ($result_fetch_space->num_rows > 0) {
         $row_space = $result_fetch_space->fetch_assoc();
         $zone_id = $row_space['zone_id'];
         $spaceName = $row_space['name'];
@@ -59,6 +59,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
+<style>
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #4caf50;
+        border-color: #269abc;
+    }
+
+    .btn-secondary:hover {
+        background-color: #dc3545;
+        /* Red color */
+        border-color: #dc3545;
+        /* Red color */
+    }
+</style>
+
 <h1>Edit Parking Space</h1>
 
 <div style="margin-bottom: 20px;">
@@ -99,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
         </tbody>
     </table>
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" class="btn btn-primary">Save</button>
     <a href="parking_zones.php" class="btn btn-secondary">Cancel</a>
 </form>
 
