@@ -52,9 +52,9 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<form action='update_status.php' method='post'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                 echo "<select name='status'>";
-                echo "<option value='1'" . ($row['status'] == 1 ? " selected" : "") . ">Open</option>";
-                echo "<option value='0'" . ($row['status'] == 0 ? " selected" : "") . ">Closed</option>";
-                echo "<option value='2'" . ($row['status'] == 2 ? " selected" : "") . ">On Maintenance</option>";
+                echo "<option value='open'" . ($row['status'] == 'Open' ? " selected" : "") . ">Open</option>";
+                echo "<option value='closed'" . ($row['status'] == 'Closed' ? " selected" : "") . ">Closed</option>";
+                echo "<option value='maintenance'" . ($row['status'] == 'Under maintenance' ? " selected" : "") . ">On Maintenance</option>";
                 echo "</select>";
                 echo "<input type='submit' class='update-button' value='Update'>";
                 echo "</form>";
