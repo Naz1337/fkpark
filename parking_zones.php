@@ -150,18 +150,19 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<td>" . htmlspecialchars($row['zone_name']) . "</td>";
                 echo "<td>" . ($row['is_available'] == 1 ? "Available" : "Not Available") . "</td>";
 
+                // Edit button
                 echo "<td class='action-buttons'>";
                 echo "<form action='update_availability.php' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
                 echo "<input type='submit' class='btn btn-warning mr-2 update-button' value='Edit'>";
                 echo "</form>";
                 
+                // Delete button
                 echo "<form action='delete_space.php' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
                 echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
                 echo "</form>";
                 echo "</td>";
-
 
                 echo "</tr>";
             }
