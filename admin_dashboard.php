@@ -101,7 +101,7 @@ require_once 'database_util.php'; // Include the database connection file
             $stmt->close();
             ?>
         </p>
-        <a href="add_parking_space.php" class="btn btn-primary">Add Parking Spaces</a>
+        <a href="add_parking_space.php" class="btn btn-primary">Add Parking Space</a>
     </div>
 </div>
 <div class="piechart">
