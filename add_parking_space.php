@@ -5,6 +5,15 @@ require_once 'database_util.php'; // Include the database connection file
 
 ?>
 
+<style>
+    .btn-secondary:hover {
+        background-color: #dc3545;
+        /* Red color */
+        border-color: #dc3545;
+        /* Red color */
+    }
+</style>
+
 <h1>Add Parking Space</h1>
 
 <div style="margin-bottom: 20px;">
@@ -45,24 +54,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <table class="table">
         <tbody>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="zone_id">Parking Zone Name:</label></td>
+                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="zone_id">Parking Zone
+                        Name:</label></td>
                 <td>
                     <select class="form-control" id="zone_id" name="zone_id">
                         <option value="1">A1</option>
                         <option value="2">A2</option>
                         <option value="3">A3</option>
-                        <option value="4">B4</option>
-                        <option value="5">B5</option>
-                        <option value="6">B6</option>
+                        <option value="4">B1</option>
+                        <option value="5">B2</option>
+                        <option value="6">B3</option>
                     </select>
                 </td>
             </tr>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="spaceName">Parking Space Name:</label></td>
-                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required placeholder="Eg. A1-1"></td>
+                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="spaceName">Parking Space
+                        Name:</label></td>
+                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required
+                        placeholder="Eg. A1-1"></td>
             </tr>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="is_available">Availability:</label></td>
+                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label
+                        for="is_available">Availability:</label></td>
                 <td>
                     <select class="form-control" id="is_available" name="is_available">
                         <option value="1">Available</option>

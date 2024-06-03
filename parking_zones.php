@@ -5,10 +5,6 @@ require_once 'database_util.php'; // Include the database connection file
 
 ?>
 
-<h1>Parking Zone</h1><br>
-
-<h2>Parking Zone List</h2>
-
 <style>
     /* Existing CSS styles */
     table {
@@ -64,10 +60,18 @@ require_once 'database_util.php'; // Include the database connection file
     .action-buttons {
         margin-top: 5px;
     }
+
+    .edit-delete-buttons form {
+        margin-right: 10px;
+        /* Adjust the spacing as needed */
+    }
 </style>
 
+<h1>Parking Zone</h1><br>
 
-
+<!-- Parking Zone List -->
+<h2>Parking Zone List</h2>
+<br>
 <table border="1">
     <thead>
         <tr>
@@ -107,13 +111,13 @@ require_once 'database_util.php'; // Include the database connection file
         ?>
     </tbody>
 </table>
-
 <br>
+
+<!-- Parking Space List -->
 <h2>Parking Space List</h2>
-
-<input type='button' class='btn btn-primary add-button' value='Add'
-    onclick="location.href='add_parking_space.php'"><br><br>
-
+<br>
+<!-- Add button -->
+<input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_space.php'"><br>
 <table border="1">
     <thead>
         <tr>
@@ -150,18 +154,22 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<td>" . htmlspecialchars($row['zone_name']) . "</td>";
                 echo "<td>" . ($row['is_available'] == 1 ? "Available" : "Not Available") . "</td>";
 
-                // Edit button
+                // Edit and Delete buttons in the same row within a div
                 echo "<td class='action-buttons'>";
-                echo "<form action='update_availability.php' method='post' style='display:inline;'>";
+                echo "<div class='edit-delete-buttons'>";
+
+                // Edit button
+                echo "<form action='update_parking_space.php' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
                 echo "<input type='submit' class='btn btn-warning mr-2 update-button' value='Edit'>";
                 echo "</form>";
-                
+
                 // Delete button
-                echo "<form action='delete_space.php' method='post' style='display:inline;'>";
+                echo "<form action='delete_parking_space.php' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
                 echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
                 echo "</form>";
+                echo "</div>";
                 echo "</td>";
 
                 echo "</tr>";

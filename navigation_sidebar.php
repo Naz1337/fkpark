@@ -27,12 +27,12 @@
         <i class="bi bi-arrow-right"></i>
         <div>Dashboard</div>
     </a>
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="parking_zones.php">
         <i class="bi bi-arrow-right"></i>
         <div>Parking Zone</div>
     </a>
 
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="add_parking_space.php">
         <i class="bi bi-arrow-right"></i>
         <div>Add Parking Space</div>
     </a>
