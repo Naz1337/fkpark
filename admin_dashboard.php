@@ -5,6 +5,50 @@ require_once 'database_util.php'; // Include the database connection file
 
 ?>
 
+<?php
+// Fetching available spaces count
+$stmt = $conn->prepare("SELECT COUNT(*) AS available_spaces FROM parking_spaces WHERE is_available = 1");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$available_spaces = $row['available_spaces'];
+$stmt->close();
+
+// Fetching not available spaces count
+$stmt = $conn->prepare("SELECT COUNT(*) AS not_available_spaces FROM parking_spaces WHERE is_available != 1");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$not_available_spaces = $row['not_available_spaces'];
+$stmt->close();
+?>
+
+<script>
+    window.onload = function () {
+        var availableSpaces = <?php echo $available_spaces; ?>;
+        var notAvailableSpaces = <?php echo $not_available_spaces; ?>;
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Parking Space Status"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 240,
+                yValueFormatString: "##0.00\"%\"",
+                indexLabel: "{label} {y}",
+                dataPoints: [
+                    { label: "Available", y: availableSpaces },
+                    { label: "Not Available", y: notAvailableSpaces }
+                ]
+            }]
+        });
+        chart.render();
+    }
+</script>
+
+
 <style>
     .dashboard-container {
         display: flex;
@@ -41,6 +85,21 @@ require_once 'database_util.php'; // Include the database connection file
         background-color: #dc3545;
         border-color: #dc3545;
     }
+
+    .container2 {
+        display: flex;
+        justify-content: center;
+    }
+
+    .piechart {
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background-image: conic-gradient(pink 70deg, lightblue 0 235deg, orange 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
 <h1>Administrator Dashboard</h1>
@@ -71,7 +130,7 @@ require_once 'database_util.php'; // Include the database connection file
     <!-- Parking Spaces Summary -->
     <div class="dashboard-card">
         <h3>Parking Spaces</h3>
-        <p>Total Spaces: 
+        <p>Total Spaces:
             <?php
             $stmt = $conn->prepare("SELECT COUNT(*) AS total_spaces FROM parking_spaces");
             $stmt->execute();
@@ -81,7 +140,7 @@ require_once 'database_util.php'; // Include the database connection file
             $stmt->close();
             ?>
         </p>
-        <p>Available: 
+        <p>Available:
             <?php
             $stmt = $conn->prepare("SELECT COUNT(*) AS available_spaces FROM parking_spaces WHERE is_available = 1");
             $stmt->execute();
@@ -91,7 +150,7 @@ require_once 'database_util.php'; // Include the database connection file
             $stmt->close();
             ?>
         </p>
-        <p>Not Available: 
+        <p>Not Available:
             <?php
             $stmt = $conn->prepare("SELECT COUNT(*) AS not_available_spaces FROM parking_spaces WHERE is_available != 1");
             $stmt->execute();
@@ -104,9 +163,12 @@ require_once 'database_util.php'; // Include the database connection file
         <a href="add_parking_space.php" class="btn btn-primary">Add Parking Space</a>
     </div>
 </div>
-<div class="piechart">
 
+<div class="container2">
+    <div class="piechart"></div>
 </div>
+
+
 
 <?php
 require_once 'layout_bottom.php';
