@@ -18,7 +18,7 @@
         <div>Users</div>
     </a>
     <a class="nav-button btn">
-        <i class="bi bi-fuel-pump"></i>
+        <i class="bi bi-car-front-fill"></i>
         <div>Vehicles</div>
     </a>
     
