@@ -17,7 +17,7 @@
         <i class="bi bi-people-fill"></i>
         <div>Users</div>
     </a>
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="vehicles_form.php">
         <i class="bi bi-fuel-pump"></i>
         <div>Vehicles</div>
     </a>

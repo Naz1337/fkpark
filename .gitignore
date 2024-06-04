@@ -49,3 +49,5 @@ temp/
 # Ignore cache directories
 .cache/
 .cache-loader/
+
+storage/

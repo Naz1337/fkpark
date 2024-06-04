@@ -1,4 +1,7 @@
 <?php
+
+use Random\RandomException;
+
 $_SERVER['APP_ENV'] = 'development';
 $base_url = '/CB22159/fkpark';  // satu lagi tempat kene sync is in vite.config.js, di line 5
 $hasImportedVite = false;
@@ -53,3 +56,45 @@ function session_pop($key) {
     return null; // Return null if the key doesn't exist
 }
 
+function extract_destination_path($input_string) {
+    $pattern = '/(storage.*$)/';
+    preg_match($pattern, $input_string, $match);
+    return $match[0];
+}
+
+/**
+ * @throws RandomException
+ */
+function generateRandomString($length = 10): string {
+    // Generate random bytes and encode them to hexadecimal
+    $randomBytes = random_bytes($length);
+    $string = bin2hex($randomBytes);
+
+    // Return the substring in case the length needs to be exact
+    return substr($string, 0, $length);
+}
+
+function resolvePath($path) {
+    // Remove any unnecessary slashes
+    $path = preg_replace('#/+#','/', str_replace('\\', '/', $path));
+
+    $parts = array_filter(explode('/', $path), 'strlen');
+    $absolutes = array();
+
+    foreach ($parts as $part) {
+        if ($part === '.') {
+            continue;
+        }
+        if ($part === '..') {
+            array_pop($absolutes);
+        } else {
+            $absolutes[] = $part;
+        }
+    }
+
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        return implode('/', $absolutes);
+    } else {
+        return '/' . implode('/', $absolutes);
+    }
+}
