@@ -1,5 +1,6 @@
 <?php 
 require_once 'bootstrap.php';
+global $base_url;
 
 if (!isset($title)) {
     $title = 'Fakulti Komputeran Parking System';
