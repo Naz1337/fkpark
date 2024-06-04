@@ -118,6 +118,7 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<option value='Closed'" . ($row['status'] == 'Closed' ? " selected" : "") . ">Closed</option>";
                 echo "<option value='Under maintenance'" . ($row['status'] == 'Under maintenance' ? " selected" : "") . ">Under maintenance</option>";
                 echo "</select>";
+                
                 // Update button
                 echo "<input type='submit' class='update-button' value='Update'>";
                 echo "</form>";
