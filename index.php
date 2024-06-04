@@ -3,8 +3,7 @@
 require_once 'layout_top.php';
 
 if (!isset($_SESSION['username'])) {
-    header('location:login.php');
-    return;
+    to_url('login.php');
 }
 
 ?>
