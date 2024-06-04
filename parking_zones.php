@@ -3,6 +3,11 @@
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
+if (!isset($_SESSION['username'])) {
+    header('location:login.php');
+    return;
+}
+
 ?>
 
 <style>
@@ -11,12 +16,6 @@ require_once 'database_util.php'; // Include the database connection file
         border-collapse: collapse;
         width: auto;
     }
-
-    /* table,
-    th,
-    td {
-        border: 1px solid black;
-    }  */
 
     th,
     td {
@@ -149,6 +148,7 @@ require_once 'database_util.php'; // Include the database connection file
             <th>No.</th>
             <th>Parking Space Name</th>
             <th>Parking Zone Name</th>
+            <th>Status</th> <!-- New Status column header -->
             <th>Availability</th>
             <th>Action</th>
         </tr>
@@ -160,7 +160,8 @@ require_once 'database_util.php'; // Include the database connection file
                 ps.id AS space_id, 
                 ps.name AS space_name, 
                 ps.is_available, 
-                pz.name AS zone_name
+                pz.name AS zone_name,
+                pz.status AS zone_status  /* Add status in query */
             FROM 
                 parking_spaces ps
             JOIN 
@@ -177,6 +178,7 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "<td>" . $counter++ . "</td>";
                 echo "<td>" . htmlspecialchars($row['space_name']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['zone_name']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['zone_status']) . "</td>";  /* Add status to table */
                 echo "<td>" . ($row['is_available'] == 1 ? "Available" : "Not Available") . "</td>";
 
                 // Edit and Delete buttons in the same row within a div
@@ -204,17 +206,15 @@ require_once 'database_util.php'; // Include the database connection file
                 echo "</div>";
                 echo "</td>";
 
-
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='5'>No data available</td></tr>";
+            echo "<tr><td colspan='6'>No data available</td></tr>";
         }
         $stmt->close();
         ?>
     </tbody>
 </table>
-
 
 <?php
 require_once 'layout_bottom.php';

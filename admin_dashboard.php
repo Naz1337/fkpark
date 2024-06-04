@@ -3,6 +3,11 @@
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
+if (!isset($_SESSION['username'])) {
+    header('location:login.php');
+    return;
+}
+
 ?>
 
 <?php

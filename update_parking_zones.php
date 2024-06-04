@@ -11,12 +11,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && isset($_POST[
     $stmt->bind_param("si", $status, $id);
 
     if ($stmt->execute()) {
-        // Update successful
-        header("Location: parking_zones.php"); // Redirect back to parking zones page
-        exit();
+        // Determine the availability based on the status
+        if ($status === 'Open') {
+            $availability = 1; // Available
+        } else {
+            $availability = 0; // Not Available
+        }
+
+        // Update the availability of parking spaces within this zone
+        $sql_update_spaces = "UPDATE parking_spaces SET is_available = ? WHERE zone_id = ?";
+        $stmt_update_spaces = $conn->prepare($sql_update_spaces);
+        $stmt_update_spaces->bind_param("ii", $availability, $id);
+
+        if ($stmt_update_spaces->execute()) {
+            // Update successful
+            header("Location: parking_zones.php"); // Redirect back to parking zones page
+            exit();
+        } else {
+            // Update of parking spaces failed
+            echo "Error updating parking spaces: " . $conn->error;
+        }
+
+        $stmt_update_spaces->close();
     } else {
-        // Update failed
-        echo "Error updating record: " . $conn->error;
+        // Update of parking zone failed
+        echo "Error updating parking zone: " . $conn->error;
     }
 
     $stmt->close();
@@ -24,4 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && isset($_POST[
     // Invalid request
     echo "Invalid request";
 }
+
+$conn->close();
 ?>
