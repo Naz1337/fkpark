@@ -19,13 +19,12 @@ $result = mysqli_query($conn, $select);
 <div class="mb-4 d-flex gap-4">
     <a href="vehicles_form.php" class="btn btn-outline-success">Register Vehicle</a>
 </div>
-
+<div class="row">
 <?php
-
     while ($row = mysqli_fetch_assoc($result)) {
         ?>
-        <div class="card mb-3 shadow" style="min-height: 3rem;">
-
+            <div class="col-6">
+            <div class="card mb-3 shadow" style="min-height: 3rem;">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h5 class=""><?= strtoupper($row['vehicle_plate']) ?></h5>
@@ -43,13 +42,14 @@ $result = mysqli_query($conn, $select);
                     <a href="vehicle_show.php?id=<?= $row['id'] ?>" class="btn btn-outline-primary stretched-link">
                         Go
                     </a>
-
                 </div>
-        </div>
+            </div>
+            </div>
         <?php
     }
 
 ?>
+</div>
 
 
 
