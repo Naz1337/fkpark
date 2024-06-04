@@ -143,6 +143,9 @@ if (!isset($_SESSION['username'])) {
 <h2>Parking Space List</h2>
 <br>
 
+<!-- Add button -->
+<input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_space.php'"><br>
+
 <!-- Search Form -->
 <form action="parking_zones.php" method="get" class="form-search d-flex align-items-center">
     <label for="search_space" class="me-2">Search Parking Spaces:</label>
@@ -150,11 +153,7 @@ if (!isset($_SESSION['username'])) {
     <button type="submit" class="btn btn-secondary search-reset ms-2">Search</button>
     <button type="reset" class="btn btn-secondary search-reset ms-2" onclick="location.href='parking_zones.php'">Reset</button>
 </form>
-
 <br>
-
-<!-- Add button -->
-<input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_space.php'"><br>
 
 <!-- Parking Space Table list -->
 <table border="1" class="table table-bordered">
