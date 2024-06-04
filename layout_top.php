@@ -43,7 +43,7 @@ if (!isset($title)) {
                 <div class="dropdown">
                     <div class="ps-2" style="cursor: pointer;" data-bs-toggle="dropdown">
                         <div class="shape-circle border">
-                            <img src="./firefox.png" alt="">
+                            <img src="./admin.jpg" alt="">
                         </div>
                     </div>
                     <ul class="dropdown-menu">
