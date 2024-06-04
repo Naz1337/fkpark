@@ -108,11 +108,11 @@ if (!isset($_SESSION['username'])) {
                 echo "<td>" . $counter++ . "</td>";
                 echo "<td>" . htmlspecialchars($row['name']) . "</td>";
 
-                echo "<td>";
+                echo "<td class=\"w-auto\">";
                 // Update selection 
-                echo "<form action='update_parking_zones.php' method='post' style='display:inline;'>";
+                echo "<form action='update_parking_zones.php' method='post' class='d-flex gap-2'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                echo "<select name='status'>";
+                echo "<select name='status' class='form-control' style='max-width: 20rem;'>";
                 echo "<option value='Open'" . ($row['status'] == 'Open' ? " selected" : "") . ">Open</option>";
                 echo "<option value='Closed'" . ($row['status'] == 'Closed' ? " selected" : "") . ">Closed</option>";
                 echo "<option value='Under maintenance'" . ($row['status'] == 'Under maintenance' ? " selected" : "") . ">Under maintenance</option>";
