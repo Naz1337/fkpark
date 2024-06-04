@@ -53,7 +53,6 @@ $stmt->close();
     }
 </script>
 
-
 <style>
     .dashboard-container {
         display: flex;
@@ -116,6 +115,7 @@ $stmt->close();
         <?php
         $stmt = $conn->prepare("
             SELECT 
+                COUNT(*) AS total_zones,
                 SUM(CASE WHEN status = 'Open' THEN 1 ELSE 0 END) AS open_zones,
                 SUM(CASE WHEN status = 'Closed' THEN 1 ELSE 0 END) AS closed_zones,
                 SUM(CASE WHEN status = 'Under maintenance' THEN 1 ELSE 0 END) AS maintenance_zones
@@ -126,6 +126,7 @@ $stmt->close();
         $row = $result->fetch_assoc();
         $stmt->close();
         ?>
+        <p>Total Zones: <?php echo $row['total_zones']; ?></p>
         <p>Open: <?php echo $row['open_zones']; ?></p>
         <p>Closed: <?php echo $row['closed_zones']; ?></p>
         <p>Under Maintenance: <?php echo $row['maintenance_zones']; ?></p>
