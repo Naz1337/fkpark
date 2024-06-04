@@ -98,3 +98,12 @@ function resolvePath($path) {
         return '/' . implode('/', $absolutes);
     }
 }
+
+function to_url($url): void
+{
+    echo <<<EOL
+<script>
+    window.location.href= '$url'
+</script>
+EOL;
+}
