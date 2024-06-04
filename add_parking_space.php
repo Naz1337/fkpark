@@ -68,7 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="zone_id">Parking Zone
                         Name:</label></td>
                 <td>
-                    <select class="form-control" id="zone_id" name="zone_id">
+                    <select class="form-select" id="zone_id" name="zone_id">
+                        <option value="" selected disabled>Select Parking Zone</option>
                         <option value="1">A1</option>
                         <option value="2">A2</option>
                         <option value="3">A3</option>
@@ -88,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <td style="width: <?php echo $max_label_length * 10; ?>px;"><label
                         for="is_available">Availability:</label></td>
                 <td>
-                    <select class="form-control" id="is_available" name="is_available">
+                    <select class="form-select" id="is_available" name="is_available">
+                        <option value="" selected disabled>Select Availability</option>
                         <option value="1">Available</option>
                         <option value="0">Not Available</option>
                     </select>

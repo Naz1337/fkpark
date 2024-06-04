@@ -112,7 +112,7 @@ if (!isset($_SESSION['username'])) {
                 // Update selection 
                 echo "<form action='update_parking_zones.php' method='post' class='d-flex gap-2'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                echo "<select name='status' class='form-control' style='max-width: 20rem;'>";
+                echo "<select name='status' class='form-select' style='max-width: 20rem;'>";
                 echo "<option value='Open'" . ($row['status'] == 'Open' ? " selected" : "") . ">Open</option>";
                 echo "<option value='Closed'" . ($row['status'] == 'Closed' ? " selected" : "") . ">Closed</option>";
                 echo "<option value='Under maintenance'" . ($row['status'] == 'Under maintenance' ? " selected" : "") . ">Under maintenance</option>";
