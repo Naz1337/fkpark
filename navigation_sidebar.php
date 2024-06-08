@@ -60,7 +60,12 @@
 
     <a class="nav-button btn">
         <i class="bi bi-arrow-right"></i>
-        <div>New Menu</div>
+        <div>Accident Report</div>
+    </a>
+
+    <a class="nav-button btn">
+        <i class="bi bi-arrow-right"></i>
+        <div>Traffic Summon Enforcement</div>
     </a>
 <!--    <a class="nav-button btn">-->
 <!--        <i class="bi bi-arrow-right"></i>-->
