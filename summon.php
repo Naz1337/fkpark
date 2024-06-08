@@ -5,7 +5,6 @@ require_once 'layout_top.php';
 if (!isset($_SESSION['username'])) {
     to_url('login.php');
 }
-
 ?>
 
 <h1>Manage Traffic Summons</h1>
