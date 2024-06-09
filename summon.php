@@ -56,13 +56,13 @@ if (isset($_POST['create_summon'])) {
 
     $stmt = $conn->prepare("INSERT INTO summons (vehicle_id, summon_date, qr_code, username, violation_type, merit_points) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("isssss", $vehicle_id, $summon_date, $qr_code, $username, $violation_type, $merit_points);
-    
+
     if ($stmt->execute()) {
         echo "<p>Summon created successfully!</p>";
     } else {
         echo "<p>Error creating summon: " . $stmt->error . "</p>";
     }
-    
+
     $stmt->close();
 }
 
@@ -170,8 +170,5 @@ if (isset($_POST['update_summon'])) {
     $stmt->close();
 }
 
-?>
-
-<?php
 require_once 'layout_bottom.php';
 ?>
