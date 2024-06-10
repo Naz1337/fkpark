@@ -176,3 +176,9 @@ function get_user_type($user_id = null) {
 
     return $user_type;
 }
+
+function check_get_id() {
+    if (!isset($_GET['id'])) {
+        to_url('users.php');
+    }
+}
