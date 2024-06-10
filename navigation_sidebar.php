@@ -53,17 +53,18 @@
     </a>
 
     <h6 class="text-uppercase fw-bold mb-2 mt-5 mx-3">Traffic Summon</h6>
-    <a class="nav-button btn">
+
+    <a class="nav-button btn" href="traffic_dashboard.php">>
         <i class="bi bi-arrow-right"></i>
         <div>Dashboard</div>
     </a>
 
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="trafic_summon.php">
         <i class="bi bi-arrow-right"></i>
         <div>Traffic Summon Record</div>
     </a>
 
-    <a class="nav-button btn">
+    <a class="nav-button btn"href="accident_report.php">
         <i class="bi bi-arrow-right"></i>
         <div>Accident Report</div>
     </a>
