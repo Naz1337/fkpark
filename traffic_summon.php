@@ -138,8 +138,7 @@ Total Summon Points: 10</p>
 </table>
 
 <p>
-    <button type="button" class="btn btn-primary" onclick="location.href='total_summon_enforcement.php'">Total Summon Enforcement</button>
-    <button type="button" class="btn btn-secondary" onclick="location.href='learn_more.php'">Learn more</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='traffic_enforcement.php'">Total Summon Enforcement</button>
     <button type="button" class="btn btn-danger" onclick="location.href='accident_report.php'">Accident Report</button>
 </p>
 
