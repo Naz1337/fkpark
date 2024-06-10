@@ -2,6 +2,8 @@
 
 use Random\RandomException;
 
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
 $_SERVER['APP_ENV'] = 'development';
 $base_url = '/CB22159/fkpark';  // satu lagi tempat kene sync is in vite.config.js, di line 5
 $hasImportedVite = false;
@@ -62,16 +64,18 @@ function extract_destination_path($input_string) {
     return $match[0];
 }
 
-/**
- * @throws RandomException
- */
-function generateRandomString($length = 10): string {
-    // Generate random bytes and encode them to hexadecimal
-    $randomBytes = random_bytes($length);
-    $string = bin2hex($randomBytes);
+function generateRandomString($length = 10, $defaultValue = '0'): string {
+    try {
+        // Generate random bytes and encode them to hexadecimal
+        $randomBytes = random_bytes($length);
+        $string = bin2hex($randomBytes);
 
-    // Return the substring in case the length needs to be exact
-    return substr($string, 0, $length);
+        // Return the substring in case the length needs to be exact
+        return substr($string, 0, $length);
+    } catch (Exception $e) {
+        // If an error occurs, return the default value
+        return $defaultValue;
+    }
 }
 
 function resolvePath($path) {
@@ -106,4 +110,69 @@ function to_url($url): void
     window.location.href= '$url'
 </script>
 EOL;
+}
+
+function get_base_url(): string
+{
+    $protocol = 'http://';
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        $protocol = 'https://';
+    }
+
+    $host = $_SERVER['HTTP_HOST'];
+
+    return $protocol . $host;
+}
+
+function generate_qr_code(String $value, String $identifier): string
+{
+    $url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . rawurlencode($value);
+    $options = [
+        'http' => [
+            'method' =>'GET',
+            'header' => 'content-type: applications/octet-stream'
+        ]
+    ];
+    $context = stream_context_create($options);
+    $response = file_get_contents($url, false, $context);
+
+    // If generateRandomString fails, it will return the identifier
+    $filename = generateRandomString(8, $identifier) . '.png';
+    $qr_code_filepath = dirname(__FILE__) . '/storage/qr_codes/' . $filename;
+
+    file_put_contents($qr_code_filepath, $response);
+
+    return extract_destination_path($qr_code_filepath);
+}
+
+function handle_file_upload($file, $filename) {
+    $tmp_name = $file['tmp_name'];
+    $destination_path = dirname(__FILE__) .  '/storage/' . $filename;
+
+    move_uploaded_file($tmp_name, resolvePath($destination_path));
+    return extract_destination_path($destination_path);
+}
+
+function get_user_type($user_id = null) {
+    global $conn;
+
+    // if userid is null, get it from session
+    if ($user_id === null) {
+        $user_id = $_SESSION['user_id'];
+    }
+
+    // if userid still null, return null
+    if ($user_id === null) {
+        return null;
+    }
+
+    $select = 'SELECT user_type FROM users WHERE id = ?';
+    $stmt = mysqli_prepare($conn, $select);
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $user_type);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $user_type;
 }

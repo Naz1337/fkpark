@@ -17,34 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle vehicle_grant file upload
     $vehicle_grant_file = $_FILES['vehicle_grant'];
-    $vehicle_grant_tmp_name = $vehicle_grant_file['tmp_name'];
-
-    $destination_path = dirname(__FILE__) .  '/storage/' . basename($vehicle_grant_file['name']) . '_' . $_SESSION['username'] . '_' . $vehicle_plate;
-
-    move_uploaded_file($vehicle_grant_tmp_name, resolvePath($destination_path));
-    $vehicle_grant_pathfile = extract_destination_path($destination_path);
+    $filename = basename($vehicle_grant_file['name']) . '_' . $_SESSION['username'] . '_' . $vehicle_plate . '.pdf';
+    $vehicle_grant_pathfile = handle_file_upload($vehicle_grant_file, $filename);
 
     // $qr_code = generateQRCode($vehicle_plate); // Assuming you have a function to generate QR code
 
-    $url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $vehicle_plate    ;
-    $options = [
-        'http' => [
-            'method' =>'GET',
-            'header' => 'content-type: applications/octet-stream'
-        ]
-    ];
-    $context = stream_context_create($options);
-    $response = file_get_contents($url, false, $context);
+    // make car link
+    $base = get_base_url();
+    $uri = '/fkpark/vehicle_show.php?plate=' . $vehicle_plate;
 
-    try {
-        $qr_code_filepath = dirname(__FILE__) . '/storage/qr_codes/' . generateRandomString(8) . '.png';
-    } catch (\Random\RandomException $e) {
-        $qr_code_filepath = dirname(__FILE__) . '/storage/qr_codes/' . $vehicle_plate . '.png';
-    }
-
-    file_put_contents($qr_code_filepath, $response);
-
-    $qr_code = extract_destination_path($qr_code_filepath);
+    $qr_code = generate_qr_code($base . $uri, $vehicle_plate);
 
     $insert_stmt->bind_param(
             "isssss",

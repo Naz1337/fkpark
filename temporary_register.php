@@ -31,7 +31,7 @@ require_once 'bootstrap.php';
                     </div>
 
                     <select name="user_type" id="userType" class="form-select mb-3">
-                        <option selected>User Type</option>
+                        <option selected disabled>User Type</option>
                         <option value="student">Student</option>
                         <option value="admin">Admin</option>
                         <option value="staff">Staff</option>

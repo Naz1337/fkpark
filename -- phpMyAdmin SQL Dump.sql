@@ -31,12 +31,12 @@ USE `fkpark`;
 --
 
 CREATE TABLE parking_spaces (
-  'id' bigint(20) UNSIGNED NOT NULL,
-  'zone_id' bigint(20) UNSIGNED NOT NULL,
-  'area' enum('A','B') NOT NULL,
-  'name' text NOT NULL,
-  'is_available' tinyint(1) NOT NULL,
-  'qr_code' text NOT NULL
+  id bigint(20) UNSIGNED NOT NULL,
+  zone_id bigint(20) UNSIGNED NOT NULL,
+  area enum('A','B') NOT NULL,
+  name text NOT NULL,
+  is_available tinyint(1) NOT NULL,
+  qr_code text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -126,9 +126,9 @@ CREATE TABLE users (
 
 CREATE TABLE summons(
   id bigint(20) UNSIGNED NOT NULL,
-  vehicle_id UNSIGNED NOT NULL,
+  vehicle_id bigint(20) UNSIGNED NOT NULL,
   summon_date text NOT NULL,
-  qr_code text NOT NULL
+  qr_code text NOT NULL,
   username text NOT NULL,
   violation_type enum('parking violation','not comply traffic regulation','accident cause') NOT NULL,
   merit_points enum('10','15','20') NOT NULL,
@@ -138,11 +138,7 @@ CREATE TABLE summons(
 -- Dumping data for table summons
 --
 
-INSERT INTO users (id, vehicle_id, summon_date, qr_code, username,violation_type, merit_points) VALUES
-('SM24001','VLE 8639', '18/6/24', 'QRcode::png($text, $file, $ecc, $pixel_Size, $frame_Size);', 'Ahmad Toib', 'Parking Violation', '10'),
-('SM24003','MON 0512', '25/6/24', 'QRcode::png($text, $file, $ecc, $pixel_Size, $frame_Size);', 'Danish Malik', 'Parking Violation', '10'),
-('SM24006','BLR 5465', '30/6/24', 'QRcode::png($text, $file, $ecc, $pixel_Size, $frame_Size);', 'staff76', 'Traffic Violation', '15'),
-('SM24008','ALU 1234', '6/7/24', 'QRcode::png($text, $file, $ecc, $pixel_Size, $frame_Size);', 'Abdul Razaq', 'Accident Cause', '20'),
+
 -- --------------------------------------------------------
 
 --
@@ -152,8 +148,8 @@ INSERT INTO users (id, vehicle_id, summon_date, qr_code, username,violation_type
 
 CREATE TABLE merit_points(
   id bigint(20) UNSIGNED NOT NULL,
-  users id UNSIGNED NOT NULL,
-  vehicle id UNSIGNED NOT NULL,
+  users_id bigint(20) UNSIGNED NOT NULL,
+  vehicle_id bigint(20) UNSIGNED NOT NULL,
   total_points text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -232,21 +228,7 @@ ALTER TABLE vehicles
   
   ADD KEY fk_approved_by (approved_by);
 
---
--- Indexes for table summons
---
-ALTER TABLE summons
-  ADD PRIMARY KEY (id),
-  ADD KEY fk_vehicle_id (vehicle_id),
-  ADD KEY fk_merit_points_id (merit_points_id);
 
---
--- Indexes for table merit_points
---
-ALTER TABLE merit_points
-  ADD PRIMARY KEY (id),
-  ADD KEY fk_vehicle_id (vehicle_id),
-  ADD KEY fk_user_id (user_id),
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -328,21 +310,7 @@ ALTER TABLE vehicles
   ADD CONSTRAINT 'fk_user_id' FOREIGN KEY ('user_id') REFERENCES 'users' (id);
 COMMIT;
 
---
--- Constraints for table summon
---
-ALTER TABLE summon
-  ADD CONSTRAINT 'fk_vehicles_id' FOREIGN KEY ('vehicles_id') REFERENCES 'vehicles' (id),
-  ADD CONSTRAINT 'fk_merit_points_id' FOREIGN KEY ('merit_points_id') REFERENCES 'merit_points_id' (id);
-COMMIT;
 
---
--- Constraints for table merit_point
---
-ALTER TABLE 'merit_point'
-  ADD CONSTRAINT 'fk_vehicle_id' FOREIGN KEY ('vehicle_id') REFERENCES 'vehicle'(id),
-  ADD CONSTRAINT 'fk_user_id' FOREIGN KEY ('user_id') REFERENCES 'users' (id);
-COMMIT;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
