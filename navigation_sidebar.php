@@ -38,16 +38,16 @@
     </a>
 
     <h6 class="text-uppercase fw-bold mb-2 mt-5 mx-3">Park Booking</h6>
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="reserve_chart.php">
         <i class="bi bi-arrow-right"></i>
         <div>Dashboard</div>
     </a>
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="new_reservation.php">
         <i class="bi bi-arrow-right"></i>
         <div>Add New Reservation</div>
     </a>
 
-    <a class="nav-button btn">
+    <a class="nav-button btn" href="reservation_list.php">
         <i class="bi bi-arrow-right"></i>
         <div>Reservation List</div>
     </a>
