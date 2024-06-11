@@ -15,16 +15,7 @@ if (!isset($title)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FKPark - <?= $title ?></title>
-    <?php if ($_SERVER['APP_ENV'] === 'development'): ?>
-        <script type="module" src="http://localhost:5173/@vite/client"></script>
-        <script type="module" src="http://localhost:5173/js/main.js"></script>
-    <?php else: ?>
-        <?php
-        $manifest = json_decode(file_get_contents(__DIR__ . '/build/.vite/manifest.json'), true);
-        ?>
-        <script type="module" src="<?= $base_url ?>/build/<?= $manifest['js/main.js']['file'] ?>"></script>
-        <link rel="stylesheet" href="<?= $base_url ?>/build/<?= $manifest['js/main.js']['css'][0] ?>">
-    <?php endif; ?>
+    <?php vite_asset('js/main.js'); ?>
 </head>
 <body>
     <div class="container-fluid p-0 d-flex fkpark-body">

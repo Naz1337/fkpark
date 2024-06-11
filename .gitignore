@@ -51,3 +51,4 @@ temp/
 .cache-loader/
 
 playground/
+db_setup_completed.txt

@@ -20,12 +20,12 @@ mysqli_stmt_execute($stmt);
 mysqli_stmt_bind_result($stmt, $username, $hashed_password, $user_id);
 mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
-mysqli_close($conn);
 
 session_start();
 if (password_verify($_POST['password'], $hashed_password)) {
     $_SESSION['username'] = $username;
     $_SESSION['user_id'] = $user_id;
+    $result = mysqli_query($conn, "UPDATE users SET is_logged_in = 1 WHERE id = $user_id");
     header('location: index.php');
 }
 else {

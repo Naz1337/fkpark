@@ -23,7 +23,10 @@ export default defineConfig(({command, mode }) => {
       manifest: true,
       outDir: 'build',
       rollupOptions: {
-        input: './js/main.js',
+        input: {
+          main: './js/main.js',
+          user_dashboard: './js/user_dashboard.js',
+        },
       },
     },
   }

@@ -10,7 +10,12 @@ if (!isset($_SESSION['username'])) {
 
 <h1>User Dashboard</h1>
 <p>Logged in as: <?= $_SESSION['username'] ?></p>
-
+<?php vite_asset('js/user_dashboard.js') ?>
+<div class="row">
+    <div class="col-6">
+        <div id="onlineOfflinePie"></div>
+    </div>
+</div>
 
 
 <?php
