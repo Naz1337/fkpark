@@ -1,8 +1,8 @@
 <?php
 require_once 'layout_top.php';
 
-$conn = new mysqli('localhost:3307', 'root', '', 'fkpark');
-
+require_once 'database_util.php';
+global $conn;
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

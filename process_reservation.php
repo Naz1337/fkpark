@@ -8,8 +8,8 @@ if (!isset($_SESSION['username'])) {
 
 date_default_timezone_set('Asia/Kuala_Lumpur');
 
-$conn = mysqli_connect('localhost:3307', 'root', '', 'fkpark');
-
+require_once 'database_util.php';
+global $conn;
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }

@@ -6,8 +6,8 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$conn = mysqli_connect('localhost:3307', 'root', '', 'fkpark');
-
+require_once 'database_util.php';
+global $conn;
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }

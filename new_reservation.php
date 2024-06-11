@@ -37,10 +37,10 @@ if (!isset($_SESSION['username'])) {
                 <option value="all">All</option>
                 <option value="1">A1</option>
                 <option value="2">A2</option>
-                <option value="3">B1</option>
-                <option value="4">B2</option>
-                <option value="5">C1</option>
-                <option value="6">C2</option>
+                <option value="3">A3</option>
+                <option value="4">B1</option>
+                <option value="5">B2</option>
+                <option value="6">B3</option>
             </select>
             <button onclick="filterParking()">Filter</button>
         </div>
