@@ -36,20 +36,34 @@ if (isset($_GET['id'])) {
     exit();
 }
 
+// Fetch parking zones from the database
+$sql_zones = "SELECT id, name FROM parking_zones";
+$result_zones = $conn->query($sql_zones);
+$parking_zones = [];
+
+if ($result_zones->num_rows > 0) {
+    while ($row_zone = $result_zones->fetch_assoc()) {
+        $parking_zones[] = $row_zone;
+    }
+}
+
 // Update parking space information
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $new_zone_id = $_POST['zone_id']; // Change to match your form field name
+    $new_zone_id = $_POST['zone_id'];
     $new_spaceName = $_POST['spaceName'];
-    $new_availability = $_POST['is_available']; // Change to match your form field name
+    $new_availability = $_POST['is_available'];
+
+    // Extract the last character for the area
+    $area = substr($new_spaceName, -1);
 
     // SQL query to update parking space data
-    $sql_update_space = "UPDATE parking_spaces SET zone_id = ?, name = ?, is_available = ? WHERE id = ?";
+    $sql_update_space = "UPDATE parking_spaces SET zone_id = ?, name = ?, is_available = ?, area = ? WHERE id = ?";
 
     // Prepare the SQL statement
     $stmt_update_space = $conn->prepare($sql_update_space);
 
     // Bind parameters
-    $stmt_update_space->bind_param("isii", $new_zone_id, $new_spaceName, $new_availability, $space_id);
+    $stmt_update_space->bind_param("isssi", $new_zone_id, $new_spaceName, $new_availability, $area, $space_id);
 
     // Execute the statement
     if ($stmt_update_space->execute()) {
@@ -92,24 +106,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <table class="table">
         <tbody>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="zone_id">Parking Zone Name:</label></td>
+                <td><label for="zone_id">Parking Zone Name:</label></td>
                 <td>
                     <select class="form-select" id="zone_id" name="zone_id" required>
-                        <option value="1" <?php echo ($zone_id == 1) ? 'selected' : ''; ?>>A1</option>
-                        <option value="2" <?php echo ($zone_id == 2) ? 'selected' : ''; ?>>A2</option>
-                        <option value="3" <?php echo ($zone_id == 3) ? 'selected' : ''; ?>>A3</option>
-                        <option value="4" <?php echo ($zone_id == 4) ? 'selected' : ''; ?>>B1</option>
-                        <option value="5" <?php echo ($zone_id == 5) ? 'selected' : ''; ?>>B2</option>
-                        <option value="6" <?php echo ($zone_id == 6) ? 'selected' : ''; ?>>B3</option>
+                        <option value="" selected disabled>Select Parking Zone</option>
+                        <?php foreach ($parking_zones as $zone): ?>
+                            <option value="<?php echo htmlspecialchars($zone['id']); ?>" <?php echo ($zone_id == $zone['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($zone['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </td>
             </tr>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="spaceName">Parking Space Name:</label></td>
-                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required placeholder="Eg. A1-1" value="<?php echo htmlspecialchars($spaceName); ?>"></td>
+                <td><label for="spaceName">Parking Space Name:</label></td>
+                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required
+                        placeholder="Eg. A1-1" value="<?php echo htmlspecialchars($spaceName); ?>"></td>
             </tr>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="is_available">Availability:</label></td>
+                <td><label for="is_available">Availability:</label></td>
                 <td>
                     <select class="form-select" id="is_available" name="is_available" required>
                         <option value="1" <?php echo ($availability == 1) ? 'selected' : ''; ?>>Available</option>

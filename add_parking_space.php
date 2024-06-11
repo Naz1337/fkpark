@@ -38,15 +38,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $zone_id = $_POST['zone_id']; // Change to match your form field name
     $spaceName = $_POST['spaceName'];
     $availability = $_POST['is_available']; // Change to match your form field name
+    $area = substr($spaceName, -1); // Extract the last character
 
     // SQL query to insert form data into the database
-    $sql = "INSERT INTO parking_spaces (zone_id, name, is_available, qr_code) VALUES (?, ?, ?, '')";
+    $sql = "INSERT INTO parking_spaces (zone_id, name, is_available, area, qr_code) VALUES (?, ?, ?, ?, '')";
 
     // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
 
     // Bind parameters
-    $stmt->bind_param("iss", $zone_id, $spaceName, $availability);
+    $stmt->bind_param("isss", $zone_id, $spaceName, $availability, $area);
 
     // Execute the statement
     if ($stmt->execute()) {
@@ -58,6 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close the statement
     $stmt->close();
 }
+
+// Fetch parking zones from the database
+$sql = "SELECT id, name FROM parking_zones";
+$result = $conn->query($sql);
+$parking_zones = [];
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $parking_zones[] = $row;
+    }
+}
 ?>
 
 <!-- HTML Form with Bootstrap classes -->
@@ -65,32 +77,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <table class="table">
         <tbody>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="zone_id">Parking Zone Name:</label></td>
+                <td><label for="zone_id">Parking Zone Name:</label></td>
                 <td>
                     <select class="form-select" id="zone_id" name="zone_id" required>
                         <option value="" selected disabled>Select Parking Zone</option>
-                        <option value="1">A1</option>
-                        <option value="2">A2</option>
-                        <option value="3">A3</option>
-                        <option value="4">B1</option>
-                        <option value="5">B2</option>
-                        <option value="6">B3</option>
+                        <?php foreach ($parking_zones as $zone): ?>
+                            <option value="<?php echo htmlspecialchars($zone['id']); ?>">
+                                <?php echo htmlspecialchars($zone['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </td>
             </tr>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="spaceName">Parking Space
-                        Name:</label></td>
-                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required placeholder="Eg. A1-1"></td>
+                <td><label for="spaceName">Parking Space Name:</label></td>
+                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required
+                        placeholder="Eg. A1-1"></td>
             </tr>
             <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="spaceName">Parking Space
-                        Name:</label></td>
-                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required placeholder="Eg. A1-1"></td>
-            </tr>
-            <tr style="margin-bottom: 10px;">
-                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label
-                        for="is_available">Availability:</label></td>
+                <td><label for="is_available">Availability:</label></td>
                 <td>
                     <select class="form-select" id="is_available" name="is_available" required>
                         <option value="" selected disabled>Select Availability</option>
