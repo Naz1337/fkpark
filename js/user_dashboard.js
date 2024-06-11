@@ -23,7 +23,7 @@ fetch('./online_offline_count.php').then(response => response.json()).then(data 
         }]
     };
 
-    let chart = new ApexCharts(document.querySelector("#onlineOfflinePie"), options);
+    let chart = new ApexCharts(document.getElementById("onlineOfflinePie"), options);
     chart.render();
 
 } );
