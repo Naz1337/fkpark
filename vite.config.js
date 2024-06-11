@@ -26,6 +26,8 @@ export default defineConfig(({command, mode }) => {
         input: {
           main: './js/main.js',
           user_dashboard: './js/user_dashboard.js',
+          admin_parking_dashboard: './js/admin_parking_dashboard.js',
+          admin_parking_status_dashboard: './js/admin_parking_status_dashboard.js',
         },
       },
     },
