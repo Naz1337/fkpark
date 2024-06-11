@@ -10,87 +10,82 @@ if (!isset($_SESSION['username'])) {
 
 ?>
 
-<style>
-    /* Existing CSS styles */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-    th,
-    td {
-        padding: 8px;
-        text-align: left;
-    }
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
 
-    .btn {
-        display: inline-block;
-        padding: 6px 12px;
-        margin-bottom: 0;
-        font-size: 14px;
-        font-weight: normal;
-        line-height: 1.42857143;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        border: 1px solid transparent;
-        border-radius: 4px;
-    }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
 
-    .btn-primary {
-        color: #fff;
-        background-color: #0275d8;
-        border-color: #0275d8;
-    }
+        .btn-primary {
+            color: #fff;
+            background-color: #0275d8;
+            border-color: #0275d8;
+        }
 
-    .btn-primary:hover {
-        background-color: #025aa5;
-        border-color: #025aa5;
-    }
+        .btn-primary:hover {
+            background-color: #025aa5;
+            border-color: #025aa5;
+        }
 
-    .btn-secondary {
-        color: #fff;
-        background-color: #6c757d;
-        border-color: #6c757d;
-    }
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
-    }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
 
-    .btn-danger {
-        color: #fff;
-        background-color: #d9534f;
-        border-color: #d43f3a;
-    }
+        .btn-danger {
+            color: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+        }
 
-    .btn-danger:hover {
-        background-color: #c9302c;
-        border-color: #ac2925;
-    }
+        .btn-danger:hover {
+            background-color: #c9302c;
+            border-color: #ac2925;
+        }
 
-    .action-buttons {
-        margin-top: 5px;
-    }
+        .view-button {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #fff;
+        }
 
-    .edit-delete-buttons form {
-        display: inline;
-        margin-right: 10px;
-    }
-
-    .view-button {
-        background-color: #ffc107;
-        border-color: #ffc107;
-        color: #fff;
-    }
-
-    .view-button:hover {
-        background-color: #e0a800;
-        border-color: #d39e00;
-    }
-</style>
+        .view-button:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+    </style>
+</head>
+<body>
 
 <h1>Traffic Summon</h1>
 <p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?><br>
@@ -148,3 +143,6 @@ Total Summon Points: 10</p>
 require_once 'layout_bottom.php';
 $conn->close();
 ?>
+
+</body>
+</html>
