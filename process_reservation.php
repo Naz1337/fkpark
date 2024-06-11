@@ -30,7 +30,6 @@ $user_id = $user['id'];
 $stmt->close();
 
 $booking_datetime = new DateTime($booking_time);
-
 $current_datetime = new DateTime();
 
 // Check if the booking time is in the past
@@ -52,6 +51,25 @@ if ($interval->h < 1 && $interval->invert == 0) {
     exit;
 }
 
+// Check if the parking space is available
+$sql = "SELECT is_available FROM parking_spaces WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $parking_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$parking_space = $result->fetch_assoc();
+
+if ($parking_space['is_available'] == 0) {
+    echo "<script>
+        alert('The parking space you chose is currently not available, choose another parking.');
+        window.history.back();
+    </script>";
+    exit;
+}
+
+$stmt->close();
+
+// Check if there is a clashing reservation
 $sql = "SELECT * FROM reservations WHERE parking_id = ? AND booking_time = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("is", $parking_id, $booking_time);
