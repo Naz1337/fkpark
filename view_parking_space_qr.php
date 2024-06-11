@@ -3,11 +3,6 @@
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
-if (!isset($_SESSION['username'])) {
-    header('location:login.php');
-    return;
-}
-
 ?>
 
 <style>
@@ -25,16 +20,13 @@ if (!isset($_SESSION['username'])) {
     }
 
     .table th {
-        width: 200px;
-        /* Adjust the width as needed */
+        width: 200px; /* Adjust the width as needed */
     }
 </style>
 
 <h1>View Parking Space</h1>
 
-<div style="margin-bottom: 20px;">
-    <a href="parking_spaces.php" class="btn btn-primary">Back</a>
-</div>
+<br>
 
 <?php
 // Check if an ID is provided in the URL
@@ -66,30 +58,27 @@ if (isset($_GET['id'])) {
         $row = $result->fetch_assoc();
         echo "<table class='table table-bordered'>";
         echo "<tbody>";
+
         echo "<tr>";
         echo "<th>Parking Space Name:</th>";
         echo "<td>" . htmlspecialchars($row['space_name']) . "</td>";
         echo "</tr>";
+
         echo "<tr>";
         echo "<th>Parking Zone Name:</th>";
         echo "<td>" . htmlspecialchars($row['zone_name']) . "</td>";
         echo "</tr>";
+
         echo "<tr>";
         echo "<th>Availability:</th>";
         echo "<td>" . ($row['is_available'] == 1 ? "Available" : "Not Available") . "</td>";
         echo "</tr>";
+        
         echo "<tr>";
         echo "<th>Status:</th>";
         echo "<td>" . htmlspecialchars($row['zone_status']) . "</td>";
         echo "</tr>";
-        echo "<tr>";
-        echo "<th>QR code:</th>";
-        echo "<td>
-                <a href='view_parking_space_qr.php?id=" . urlencode($row['space_id']) . "'>
-                    <img src='parking_space_qr.php?text=" . urlencode($row['space_id']) . "' alt='QR Code'>
-                </a>
-              </td>";
-        echo "</tr>";
+
         echo "</tbody>";
         echo "</table>";
     } else {

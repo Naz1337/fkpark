@@ -93,15 +93,21 @@ $stmt->close();
     </div>
 </div>
 
-<?php vite_asset('js/admin_parking_dashboard.js') ?>
+<?php
+    vite_asset('js/admin_parking_dashboard.js');
+    vite_asset('js/admin_parking_status_dashboard.js');
+?>
+
 <div class="row">
     <div class="col-6">
         <div class="card">
             <div class="card-body">
                 <div id="parkingPie"></div>
             </div>
+            <div class="card-body">
+                <div id="parkingStatus"></div>
+            </div>
         </div>
-        
     </div>
 </div>
 
