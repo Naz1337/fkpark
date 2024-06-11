@@ -84,6 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <td><input type="text" class="form-control" id="spaceName" name="spaceName" required placeholder="Eg. A1-1"></td>
             </tr>
             <tr style="margin-bottom: 10px;">
+                <td style="width: <?php echo $max_label_length * 10; ?>px;"><label for="spaceName">Parking Space
+                        Name:</label></td>
+                <td><input type="text" class="form-control" id="spaceName" name="spaceName" required placeholder="Eg. A1-1"></td>
+            </tr>
+            <tr style="margin-bottom: 10px;">
                 <td style="width: <?php echo $max_label_length * 10; ?>px;"><label
                         for="is_available">Availability:</label></td>
                 <td>

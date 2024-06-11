@@ -4,7 +4,7 @@ use Random\RandomException;
 
 date_default_timezone_set('Asia/Kuala_Lumpur');
 
-$_SERVER['APP_ENV'] = 'not development';
+$_SERVER['APP_ENV'] = 'development';
 $base_url = '/CB22159/fkpark';  // satu lagi tempat kene sync is in vite.config.js, di line 5
 $hasImportedVite = false;
 
