@@ -29,15 +29,10 @@ try {
     $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Drop the database if it already exists but in a way that is not using drop. just drop
-    // each table
-    $pdo->exec("DROP TABLE IF EXISTS merit_points");
-    $pdo->exec("DROP TABLE IF EXISTS parking_spaces");
-    $pdo->exec("DROP TABLE IF EXISTS parking_zones");
-    $pdo->exec("DROP TABLE IF EXISTS reservations");
-    $pdo->exec("DROP TABLE IF EXISTS summons");
-    $pdo->exec("DROP TABLE IF EXISTS vehicles");
-    $pdo->exec("DROP TABLE IF EXISTS users");
+    // if in development, drop database fkpark
+    if ($_SERVER['APP_ENV'] === 'development') {
+        $pdo->exec("DROP DATABASE IF EXISTS fkpark");
+    }
 
 
     // The SQL script to be executed
