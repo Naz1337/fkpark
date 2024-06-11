@@ -44,6 +44,24 @@ try {
         // create a new connection to the fkpark database
         $pdo = new PDO("mysql:host=$hostname;dbname=fkpark", $username, $password);
     }
+    else if ($_SERVER['APP_ENV'] === 'not development') {
+        // if it not development, we can not drop databases, we need to drop each tables individually
+
+        // get list of table from database
+        $stmt = $pdo->query("SHOW TABLES");
+        $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        // get the list of all contraint in the database and remove them and the table
+        foreach ($tables as $table) {
+            $stmt = $pdo->query("SHOW CREATE TABLE $table");
+            $create = $stmt->fetch(PDO::FETCH_ASSOC);
+            $create = $create['Create Table'];
+
+            $stmt = $pdo->query("SET FOREIGN_KEY_CHECKS = 0");
+            $stmt = $pdo->query("DROP TABLE IF EXISTS $table");
+            $stmt = $pdo->query("SET FOREIGN_KEY_CHECKS = 1");
+        }
+    }
 
     // The SQL script to be executed
     $sql = <<<'SQL'
