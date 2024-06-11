@@ -123,7 +123,9 @@ require_once 'layout_top.php';
     </div>
     <div class="d-flex justify-content-center gap-3">
         <a href="user_edit.php?id=<?= $id ?>" class="btn btn-outline-primary">Edit</a>
-        <a href="user_delete.php?id=<?= $id ?>" class="btn btn-outline-danger">Delete</a>
+        <?php if (get_user_type() == 'admin'): ?>
+            <a href="user_delete.php?id=<?= $id ?>" class="btn btn-outline-danger">Delete</a>
+        <?php endif; ?>
 
     </div>
 </div>

@@ -49,20 +49,32 @@ require_once 'layout_top.php';
                         <label for="username" class="form-label">Username: </label>
                     </div>
                     <div class="col">
-                        <input type="text" name="username" id="username" class="form-control" value="<?= $username ?>">
+                        <?php if (get_user_type() === 'admin') : ?>
+                            <input type="text" name="username" id="username" class="form-control" value="<?= $username ?>">
+                        <?php else : ?>
+                            <input type="text" name="username" id="username" class="form-control-plaintext" readonly value="<?= $username ?>">
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
             <div class="col-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
-                        <label for="" class="form-label">User Type: </label>
+                        <label for="userType" class="form-label">User Type: </label>
                     </div>
                     <div class="col">
-                        <div class="form-control-plaintext">
-                            <span class="badge bg-primary"><?= ucwords($user_type) ?></span>
-                        </div>
-                        <input type="hidden" class="form-control" name="user_type" id="userType" value="<?= $user_type ?>">
+                        <?php if (get_user_type() !== 'admin') : ?>
+                            <div class="form-control-plaintext">
+                                <span class="badge bg-primary"><?= ucwords($user_type) ?></span>
+                            </div>
+                            <input type="hidden" class="form-control" name="user_type" id="userType" value="<?= $user_type ?>">
+                        <?php elseif (get_user_type() === 'admin') : ?>
+                            <select name="user_type" id="userType" class="form-select">
+                                <option value="student" <?= $user_type === 'student' ? 'selected' : '' ?>>Student</option>
+                                <option value="staff" <?= $user_type === 'staff' ? 'selected' : '' ?>>Staff</option>
+                                <option value="admin" <?= $user_type === 'admin' ? 'selected' : '' ?>>Admin</option>
+                            </select>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
