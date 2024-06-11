@@ -7,7 +7,6 @@ if (!isset($_SESSION['username'])) {
     header('location:login.php');
     return;
 }
-
 ?>
 
 <?php
@@ -28,83 +27,7 @@ $not_available_spaces = $row['not_available_spaces'];
 $stmt->close();
 ?>
 
-<script>
-    window.onload = function () {
-        var availableSpaces = <?php echo $available_spaces; ?>;
-        var notAvailableSpaces = <?php echo $not_available_spaces; ?>;
-
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            title: {
-                text: "Parking Space Status"
-            },
-            data: [{
-                type: "pie",
-                startAngle: 240,
-                yValueFormatString: "##0.00\"%\"",
-                indexLabel: "{label} {y}",
-                dataPoints: [
-                    { label: "Available", y: availableSpaces },
-                    { label: "Not Available", y: notAvailableSpaces }
-                ]
-            }]
-        });
-        chart.render();
-    }
-</script>
-
-<style>
-    .dashboard-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        margin: 20px 0;
-    }
-
-    .dashboard-card {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        width: 30%;
-        margin: 10px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .dashboard-card h3 {
-        margin-top: 0;
-    }
-
-    .dashboard-card p {
-        margin: 10px 0;
-    }
-
-    .btn-primary:hover {
-        color: #fff;
-        background-color: #4caf50;
-        border-color: #269abc;
-    }
-
-    .btn-secondary:hover {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
-
-    .container2 {
-        display: flex;
-        justify-content: center;
-    }
-
-    .piechart {
-        width: 400px;
-        height: 400px;
-        border-radius: 50%;
-        background-image: conic-gradient(pink 70deg, lightblue 0 235deg, orange 0);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+<link rel="stylesheet" href="styles/module2/admin_dashboard.css">
 
 <h1>Administrator Dashboard</h1>
 
@@ -170,11 +93,17 @@ $stmt->close();
     </div>
 </div>
 
-<div class="container2">
-    <div class="piechart"></div>
+<?php vite_asset('js/admin_parking_dashboard.js') ?>
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <div id="parkingPie"></div>
+            </div>
+        </div>
+        
+    </div>
 </div>
-
-
 
 <?php
 require_once 'layout_bottom.php';
