@@ -40,6 +40,9 @@ try {
         $pdo = new PDO("mysql:host=$hostname", $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->exec("CREATE DATABASE fkpark");
+
+        // create a new connection to the fkpark database
+        $pdo = new PDO("mysql:host=$hostname;dbname=fkpark", $username, $password);
     }
 
     // The SQL script to be executed
