@@ -52,14 +52,24 @@ require_once 'layout_top.php';
         <tbody>
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <tr>
-                <td><span class="badge bg-primary"><?= ucwords($row['user_type']) ?></span></td>
-                <td><?= $row['username'] ?></td>
-                <td><?= $row['first_name'] . ' ' . $row['last_name'] ?></td>
-                <td>
-                    <a href="vehicles.php?user_id=<?= $row['id'] ?>" class="btn btn-primary">View Cars</a>
-                    <a href="user_profile_show.php?id=<?= $row['id'] ?>" class="btn btn-outline-primary">View</a>
-                    <a href="user_edit.php?id=<?= $row['id'] ?>" class="btn btn-outline-secondary">Edit</a>
-                    <a href="user_delete.php?id=<?= $row['id'] ?>" class="btn btn-outline-danger">Delete</a>
+                <td class="py-3"><span class="badge bg-primary"><?= ucwords($row['user_type']) ?></span></td>
+                <td class="py-3"><?= $row['username'] ?></td>
+                <td class="py-3"><?= $row['first_name'] . ' ' . $row['last_name'] ?></td>
+                <td class="py-3">
+                    <div class="d-flex gap-2">
+                        <div>
+                            <a href="vehicles.php?user_id=<?= $row['id'] ?>" class="btn btn-primary position-relative">
+                                View Vehicles
+                                <?php if ($row['unapproved_cars_count'] > 0): ?>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= $row['unapproved_cars_count'] ?></span>
+                                <?php endif; ?>
+                            </a>
+                        </div>
+                        <a href="user_profile_show.php?id=<?= $row['id'] ?>" class="btn btn-outline-primary">View</a>
+                        <a href="user_edit.php?id=<?= $row['id'] ?>" class="btn btn-outline-secondary">Edit</a>
+                        <a href="user_delete.php?id=<?= $row['id'] ?>" class="btn btn-outline-danger">Delete</a>
+                    </div>
+
                 </td>
             </tr>
         <?php endwhile; ?>

@@ -86,35 +86,35 @@ CREATE TABLE `merit_points` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `parking_spaces`
+-- Table structure for table parking_spaces
 --
 
-CREATE TABLE `parking_spaces` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `zone_id` bigint(20) UNSIGNED NOT NULL,
-  `area` char(1) NOT NULL,
-  `name` text NOT NULL,
-  `is_available` tinyint(1) NOT NULL,
-  `qr_code` text NOT NULL
+CREATE TABLE parking_spaces (
+  id bigint(20) UNSIGNED NOT NULL,
+  zone_id bigint(20) UNSIGNED NOT NULL,
+  area int(11) NOT NULL,
+  name text NOT NULL,
+  is_available tinyint(1) NOT NULL,
+  qr_code text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `parking_spaces`
+-- Dumping data for table parking_spaces
 --
 
 INSERT INTO parking_spaces (id, zone_id, area, name, is_available, qr_code) VALUES
-(1, 1, '1', 'A1-1', 1, ''),
-(2, 1, '2', 'A1-2', 1, ''),
-(3, 2, '1', 'A2-1', 1, ''),
-(4, 2, '2', 'A2-2', 1, ''),
-(5, 3, '1', 'A3-1', 1, ''),
-(6, 3, '2', 'A3-2', 1, ''),
-(7, 4, '1', 'B1-1', 1, ''),
-(8, 4, '2', 'B1-2', 1, ''),
-(9, 5, '1', 'B2-2', 1, ''),
-(10, 5, '2', 'B2-2', 1, ''),
-(11, 6, '1', 'B3-1', 1, ''),
-(12, 6, '2', 'B3-2', 1, '');
+(1, 1, 1, 'A1-1', 1, ''),
+(2, 1, 2, 'A1-2', 1, ''),
+(3, 2, 1, 'A2-1', 1, ''),
+(4, 2, 2, 'A2-2', 1, ''),
+(5, 3, 1, 'A3-1', 1, ''),
+(6, 3, 2, 'A3-2', 1, ''),
+(7, 4, 1, 'B1-1', 1, ''),
+(8, 4, 2, 'B1-2', 1, ''),
+(9, 5, 1, 'B2-2', 1, ''),
+(10, 5, 2, 'B2-2', 1, ''),
+(11, 6, 1, 'B3-1', 1, ''),
+(12, 6, 2, 'B3-2', 1, '');
 
 -- --------------------------------------------------------
 
@@ -142,10 +142,6 @@ INSERT INTO `parking_zones` (`id`, `name`, `status`) VALUES
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `reservations`
---
-
 CREATE TABLE `reservations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
@@ -154,6 +150,18 @@ CREATE TABLE `reservations` (
   `duration` double NOT NULL,
   `qr_code` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `user_id`, `parking_id`, `booking_time`, `duration`, `qr_code`) VALUES
+(4, 1, 2, '2024-07-02 14:00:00', 2, ''),
+(14, 6, 3, '2024-06-15 05:40:00', 2, ''),
+(15, 6, 10, '2024-06-28 02:33:00', 2, ''),
+(16, 6, 6, '2024-06-29 03:17:00', 2, ''),
+(19, 6, 1, '2024-06-11 05:06:00', 2, ''),
+(20, 6, 7, '2024-06-11 02:37:00', 2, '');
 
 -- --------------------------------------------------------
 
@@ -207,6 +215,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `user_type`, `first_name`, `l
 (1, 'mangkuk', '$2y$10$/Ga/GYo53JenXvCS2KiWOOE3AZZ/ckM.DsMFLbU2/EW8OJdIK638K', 'admin', 'Mohd Mankuk', 'bin Lejen', '999', 'NO 1'),
 (3, 'staff01', '$2y$10$ioms9iOh9tH8HHCrvTJOV.nJh0EviRSMv1a7o/DHNuW3d/abbGuIu', 'staff', 'staff', 'ayah', '999', '1'),
 (4, 'staff02', '$2y$10$4C9MeAgNINN3jSg6O5AnsOahBMvacqKezaROfDC9wPLkU293l.qvq', 'staff', 'staff', '', '1', '1'),
+(6, 'cb22124', '$2y$10$5pHD72DYZWQN0DjQslaKrujsA4tI9TxwpeXiqn8yt4ER0vg7ZK8Ke', 'student', 'Haikal', 'Imran', '01129438145', 'A-10-8, Tower 1 DHUAM UV, Pekan Pahang'),
 (7, 'fwz', '$2y$10$DqzME3XrcL7mplQLDzwpF.JgmdxKZ2jDmhwdTfHQ0yPoHpfgLZ52S', 'admin', 'fawwaz', 'hatmi', '01159912744', 'UMP'),
 (8, 'danial', '$2y$10$gBy3WjSpHDVMjFhNZ2r3g.Nbnr3/kt6uw7ZNWW8rFid5ErKUiyPnS', 'student', 'danial', 'aiman', '0123456789', 'eefrf'),
 (10, 'staff1', '$2y$10$YJam0t4ClKhS07SYmnc8JOcet3EpRpVcs24cfCdn0m.2siBILmtYy', 'staff', 'Staff', '1', '235', 'No 3'),
@@ -353,9 +362,9 @@ ALTER TABLE `parking_spaces`
 --
 -- Constraints for table `reservations`
 --
-ALTER TABLE `reservations`
-  ADD CONSTRAINT `fk_reservation_parking_id` FOREIGN KEY (`parking_id`) REFERENCES `parking_spaces` (`id`),
-  ADD CONSTRAINT `fk_reservation_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+# ALTER TABLE `reservations`
+#   ADD CONSTRAINT `fk_reservation_parking_id` FOREIGN KEY (`parking_id`) REFERENCES `parking_spaces` (`id`),
+#   ADD CONSTRAINT `fk_reservation_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `vehicles`
