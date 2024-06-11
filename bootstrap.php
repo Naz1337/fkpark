@@ -126,22 +126,28 @@ function get_base_url(): string
 
 function generate_qr_code(String $value, String $identifier): string
 {
-    $url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . rawurlencode($value);
-    $options = [
-        'http' => [
-            'method' =>'GET',
-            'header' => 'content-type: applications/octet-stream'
-        ]
-    ];
-    $context = stream_context_create($options);
-    $response = file_get_contents($url, false, $context);
+//    $url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . rawurlencode($value);
+//    $options = [
+//        'http' => [
+//            'method' =>'GET',
+//            'header' => 'content-type: applications/octet-stream'
+//        ]
+//    ];
+//    $context = stream_context_create($options);
+//    $response = file_get_contents($url, false, $context);
+//
+//    // If generateRandomString fails, it will return the identifier
+//    $filename = generateRandomString(8, $identifier) . '.png';
+//    $qr_code_filepath = dirname(__FILE__) . '/storage/qr_codes/' . $filename;
+//
+//    file_put_contents($qr_code_filepath, $response);
+//
+//    return extract_destination_path($qr_code_filepath);
+    include_once ('phpqrcode/qrlib.php');
 
-    // If generateRandomString fails, it will return the identifier
     $filename = generateRandomString(8, $identifier) . '.png';
     $qr_code_filepath = dirname(__FILE__) . '/storage/qr_codes/' . $filename;
-
-    file_put_contents($qr_code_filepath, $response);
-
+    QRcode::png($value, $qr_code_filepath);
     return extract_destination_path($qr_code_filepath);
 }
 

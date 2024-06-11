@@ -12,7 +12,15 @@ if (isset($_GET['query'])) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $select = 'SELECT * FROM users';
+    // https://www.interviewquery.com/p/sql-count-case-when
+    $select = <<<'SQL'
+SELECT users.*, 
+       COUNT(CASE WHEN vehicles.approval_status = 0 THEN 1 ELSE NULL END) AS unapproved_cars_count
+FROM users
+LEFT JOIN vehicles ON users.id = vehicles.user_id
+GROUP BY users.id
+ORDER BY unapproved_cars_count DESC;
+SQL;
     $stmt = mysqli_prepare($conn, $select);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -48,6 +56,7 @@ require_once 'layout_top.php';
                 <td><?= $row['username'] ?></td>
                 <td><?= $row['first_name'] . ' ' . $row['last_name'] ?></td>
                 <td>
+                    <a href="vehicles.php?user_id=<?= $row['id'] ?>" class="btn btn-primary">View Cars</a>
                     <a href="user_profile_show.php?id=<?= $row['id'] ?>" class="btn btn-outline-primary">View</a>
                     <a href="user_edit.php?id=<?= $row['id'] ?>" class="btn btn-outline-secondary">Edit</a>
                     <a href="user_delete.php?id=<?= $row['id'] ?>" class="btn btn-outline-danger">Delete</a>
