@@ -36,8 +36,8 @@ try {
     $pdo->exec("DROP TABLE IF EXISTS parking_zones");
     $pdo->exec("DROP TABLE IF EXISTS reservations");
     $pdo->exec("DROP TABLE IF EXISTS summons");
-    $pdo->exec("DROP TABLE IF EXISTS users");
     $pdo->exec("DROP TABLE IF EXISTS vehicles");
+    $pdo->exec("DROP TABLE IF EXISTS users");
 
 
     // The SQL script to be executed
