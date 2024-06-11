@@ -29,7 +29,7 @@ $stmt->close();
 
 <link rel="stylesheet" href="styles/module2/admin_dashboard.css">
 
-<h1>Administrator Dashboard</h1>
+<h1>Parking Information</h1>
 
 <div class="dashboard-container">
     <!-- Parking Zones Summary -->
@@ -99,7 +99,7 @@ $stmt->close();
 ?>
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-6 mx-auto">
         <div class="card">
             <div class="card-body">
                 <div id="parkingPie"></div>
