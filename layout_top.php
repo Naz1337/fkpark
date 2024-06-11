@@ -50,8 +50,9 @@ if (!isset($title)) {
                         </div>
                     </div>
                     <ul class="dropdown-menu">
+                        <li><div class="dropdown-item-text"><strong> <?= $_SESSION['username'] ?></strong></div></li>
                         <li>
-                            <a class="dropdown-item d-flex align-content-center gap-2" href="user_profile.php">
+                            <a class="dropdown-item d-flex align-content-center gap-2" href="user_profile_show.php?id=<?= $_SESSION['user_id'] ?>">
                                 <i class="bi bi-person"></i>
                                 View Profile
                             </a>

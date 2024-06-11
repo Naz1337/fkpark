@@ -6,6 +6,11 @@ check_get_id();
 
 $id = (int) $_GET['id'];
 
+if ($_SESSION['user_id'] === $id) {
+    to_url('users.php');
+    return;
+}
+
 // delete sql
 $delete = <<<EOL
     DELETE FROM users

@@ -8,15 +8,19 @@
         <i class="bi bi-house"></i>
         <div>Home</div>
     </a>
-    <a class="nav-button btn" href="temporary_register.php">
-        <i class="bi bi-r-square-fill"></i>
-        <div>Register User</div>
+    <a class="nav-button btn" href="user_profile_show.php?id=<?= $_SESSION['user_id'] ?>">
+        <i class="bi bi-person"></i>
+        <div>My Profile</div>
     </a>
-
-    <a class="nav-button btn">
-        <i class="bi bi-people-fill"></i>
-        <div>Users</div>
-    </a>
+    <?php
+    require_once 'database_util.php';
+    ?>
+    <?php if (get_user_type() === 'admin' || get_user_type() == 'staff') : ?>
+        <a class="nav-button btn" href="users.php">
+            <i class="bi bi-people-fill"></i>
+            <div>Users</div>
+        </a>
+    <?php endif; ?>
     <a class="nav-button btn" href="vehicles.php">
         <i class="bi bi-fuel-pump"></i>
         <div>Vehicles</div>

@@ -1,15 +1,22 @@
 <?php
 
 require_once  'bootstrap.php';
-
-$select = 'SELECT * FROM users';
 require_once 'database_util.php';
 global $conn;
 
-$stmt = mysqli_prepare($conn, $select);
-mysqli_stmt_execute($stmt);
-
-$result = mysqli_stmt_get_result($stmt);
+if (isset($_GET['query'])) {
+    $query = '%' . $_GET['query'] . '%';
+    $select = 'SELECT * FROM users WHERE username LIKE ? OR first_name LIKE ? OR last_name LIKE ?';
+    $stmt = mysqli_prepare($conn, $select);
+    mysqli_stmt_bind_param($stmt, 'sss', $query, $query, $query);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $select = 'SELECT * FROM users';
+    $stmt = mysqli_prepare($conn, $select);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+}
 
 require_once 'layout_top.php';
 ?>
