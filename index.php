@@ -15,7 +15,7 @@ if (!isset($_SESSION['username'])) {
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                    <div id="onlineOfflinePie"></div>
+                <div id="onlineOfflinePie"></div>
             </div>
         </div>
         
