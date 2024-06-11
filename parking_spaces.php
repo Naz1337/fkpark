@@ -15,10 +15,11 @@ if (!isset($_SESSION['username'])) {
 <!-- Parking Space List -->
 <h1>Parking Space</h1><br>
 <h2>Parking Space List</h2><br>
-
-<!-- Add button -->
-<input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_space.php'"><br>
-
+<?php if (get_user_type() === 'admin'): //for admin ?>
+    <!-- Add button -->
+    <input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_space.php'">
+<?php endif; ?>
+<br>
 <!-- Search Form for Parking Space-->
 <form action="parking_spaces.php" method="get" class="form-search d-flex align-items-center">
     <label for="search_space" class="me-2">Search Parking Spaces:</label>
@@ -29,7 +30,6 @@ if (!isset($_SESSION['username'])) {
         onclick="location.href='parking_spaces.php'">Reset</button>
 </form>
 <br>
-
 <!-- Parking Space Table list -->
 <table border="1" class="table table-bordered">
     <thead>
@@ -89,21 +89,22 @@ if (!isset($_SESSION['username'])) {
                 echo "<input type='submit' class='btn btn-warning mr-2 update-button view-button' value='View'>";
                 echo "</form>";
 
-                // Edit button 
-                echo "<form action='edit_parking_space.php' method='get' style='display:inline;'>";
-                echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
-                echo "<input type='submit' class='btn btn-warning mr-2 update-button' value='Edit'>";
-                echo "</form>";
+                if (get_user_type() === 'admin'):
+                    // Edit button 
+                    echo "<form action='edit_parking_space.php' method='get' style='display:inline;'>";
+                    echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
+                    echo "<input type='submit' class='btn btn-warning mr-2 update-button' value='Edit'>";
+                    echo "</form>";
 
-                // Delete button 
-                echo "<form action='delete_parking_space.php' method='post' style='display:inline;'>";
-                echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
-                echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
-                echo "</form>";
+                    // Delete button 
+                    echo "<form action='delete_parking_space.php' method='post' style='display:inline;'>";
+                    echo "<input type='hidden' name='id' value='" . $row['space_id'] . "'>";
+                    echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
+                    echo "</form>";
+                endif;
+
                 echo "</div>";
-
                 echo "</td>";
-
                 echo "</tr>";
             }
         } else {

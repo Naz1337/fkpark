@@ -15,7 +15,7 @@
     <?php
     require_once 'database_util.php';
     ?>
-    <?php if (get_user_type() === 'admin' || get_user_type() == 'staff') : ?>
+    <?php if (get_user_type() === 'admin' || get_user_type() == 'staff'): ?>
         <a class="nav-button btn" href="users.php">
             <i class="bi bi-people-fill"></i>
             <div>Users</div>
@@ -25,31 +25,33 @@
         <i class="bi bi-fuel-pump"></i>
         <div>Vehicles</div>
     </a>
-    
+
     <h6 class="text-uppercase fw-bold mb-2 mt-5 mx-3">Parking Management</h6>
-    <a class="nav-button btn" href="admin_dashboard.php">
-        <i class="bi bi-arrow-right"></i>
-        <div>Dashboard</div>
-    </a>
+    <?php if (get_user_type() === 'admin'): ?>
+        <a class="nav-button btn" href="admin_dashboard.php">
+            <i class="bi bi-arrow-right"></i>
+            <div>Dashboard</div>
+        </a>
+    <?php endif; ?>
     <a class="nav-button btn" href="parking_zones.php">
         <i class="bi bi-arrow-right"></i>
         <div>Parking Zone</div>
     </a>
-
     <a class="nav-button btn" href="parking_spaces.php">
         <i class="bi bi-arrow-right"></i>
         <div>Parking Space</div>
     </a>
-
-    <a class="nav-button btn" href="add_parking_zone.php">
-        <i class="bi bi-arrow-right"></i>
-        <div>Add Parking Zone</div>
-    </a>
-
-    <a class="nav-button btn" href="add_parking_space.php">
-        <i class="bi bi-arrow-right"></i>
-        <div>Add Parking Space</div>
-    </a>
+    <!-- For admin only -->
+    <?php if (get_user_type() === 'admin'): ?>  
+        <a class="nav-button btn" href="add_parking_zone.php">
+            <i class="bi bi-arrow-right"></i>
+            <div>Add Parking Zone</div>
+        </a>
+        <a class="nav-button btn" href="add_parking_space.php">
+            <i class="bi bi-arrow-right"></i>
+            <div>Add Parking Space</div>
+        </a>
+    <?php endif; ?>
 
     <h6 class="text-uppercase fw-bold mb-2 mt-5 mx-3">Park Booking</h6>
     <a class="nav-button btn" href="reserve_chart.php">
@@ -78,12 +80,12 @@
         <div>Traffic Summon Record</div>
     </a>
 
-    <a class="nav-button btn"href="accident_report.php">
+    <a class="nav-button btn" href="accident_report.php">
         <i class="bi bi-arrow-right"></i>
         <div>Accident Report</div>
     </a>
-<!--    <a class="nav-button btn">-->
-<!--        <i class="bi bi-arrow-right"></i>-->
-<!--        <div>Home</div>-->
-<!--    </a>-->
+    <!--    <a class="nav-button btn">-->
+    <!--        <i class="bi bi-arrow-right"></i>-->
+    <!--        <div>Home</div>-->
+    <!--    </a>-->
 </nav>

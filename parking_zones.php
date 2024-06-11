@@ -17,9 +17,11 @@ if (!isset($_SESSION['username'])) {
 <!-- Parking Zone List -->
 <h2>Parking Zone List</h2>
 <br>
-
-<!-- Add button -->
-<input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_zone.php'"><br>
+<?php if (get_user_type() === 'admin'): ?>
+    <!-- Add button -->
+    <input type='button' class='btn btn-primary add-button' value='Add' onclick="location.href='add_parking_zone.php'">
+<?php endif; ?>
+<br>
 
 <!-- Search Form for Parking Zone-->
 <form action="parking_zones.php" method="get" class="form-search d-flex align-items-center">
@@ -74,21 +76,22 @@ if (!isset($_SESSION['username'])) {
                 echo "<input type='submit' class='btn btn-warning mr-2 update-button view-button' value='View'>";
                 echo "</form>";
 
-                // Edit button 
-                echo "<form action='edit_parking_zone.php' method='get' style='display:inline;'>";
-                echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                echo "<button type='submit' class='btn btn-warning mr-2 update-button'>Edit</button>";
-                echo "</form>";
+                if (get_user_type() === 'admin'): //for admin
+                    // Edit button 
+                    echo "<form action='edit_parking_zone.php' method='get' style='display:inline;'>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<button type='submit' class='btn btn-warning mr-2 update-button'>Edit</button>";
+                    echo "</form>";
 
-                // Delete button 
-                echo "<form action='delete_parking_zone.php' method='post' style='display:inline;'>";
-                echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
-                echo "</form>";
+                    // Delete button 
+                    echo "<form action='delete_parking_zone.php' method='post' style='display:inline;'>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<input type='submit' class='btn btn-danger delete-button' value='Delete'>";
+                    echo "</form>";
+                endif;
+
                 echo "</div>";
-
                 echo "</td>";
-
                 echo "</tr>";
             }
         } else {
