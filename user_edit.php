@@ -25,7 +25,8 @@ mysqli_stmt_bind_result(
     $first_name,
     $last_name,
     $contact_number,
-    $address
+    $address,
+    $_
 );
 
 if (!mysqli_stmt_fetch($stmt)) {
