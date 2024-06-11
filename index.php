@@ -13,7 +13,14 @@ if (!isset($_SESSION['username'])) {
 <?php vite_asset('js/user_dashboard.js') ?>
 <div class="row">
     <div class="col-6">
-        <div id="onlineOfflinePie"></div>
+        <div class="card">
+            <div class="card-body">
+                <div class="container">
+                    <div id="onlineOfflinePie"></div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 
