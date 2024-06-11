@@ -17,8 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle vehicle_grant file upload
     $vehicle_grant_file = $_FILES['vehicle_grant'];
-    $filename = basename($vehicle_grant_file['name']) . '_' . $_SESSION['username'] . '_' . $vehicle_plate . '.pdf';
-    $vehicle_grant_pathfile = handle_file_upload($vehicle_grant_file, $filename);
+    $vehicle_grant_pathfile = file_get_contents($vehicle_grant_file['tmp_name']);
 
     // $qr_code = generateQRCode($vehicle_plate); // Assuming you have a function to generate QR code
 
@@ -26,16 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $base = get_base_url();
     $uri = '/fkpark/vehicle_show.php?plate=' . $vehicle_plate;
 
-    $qr_code = generate_qr_code($base . $uri, $vehicle_plate);
-
+    $qr_code = qr_base64($base . $uri);
+//    $qr_code = generate_qr_code($base . $uri, $vehicle_plate);
+    $nullVar = null;
     $insert_stmt->bind_param(
-            "isssss",
+            "isssbs",
             $user_id,
             $vehicle_type,
             $vehicle_model,
             $vehicle_plate,
-            $vehicle_grant_pathfile,
+            $nullVar,
             $qr_code);
+
+    $insert_stmt->send_long_data(4, $vehicle_grant_pathfile);
 
     if ($insert_stmt->execute()) {
         echo "Vehicle information inserted successfully.";

@@ -24,7 +24,7 @@ if ($current_plate !== $_POST['vehicle_plate']) {
     // update qr to new plate
     $base = get_base_url();
     $uri = '/fkpark/vehicle_show.php?plate=' . $_POST['vehicle_plate'];
-    $qr_code = generate_qr_code($base . $uri, $_POST['vehicle_plate']);
+    $qr_code = qr_base64($base . $uri);
 }
 
 // prepare the update statement

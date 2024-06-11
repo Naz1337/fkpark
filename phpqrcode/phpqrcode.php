@@ -957,6 +957,26 @@
             
             ImageDestroy($image);
         }
+
+        public static function pngNaz($frame, $filename = false, $pixelPerPoint = 4, $outerFrame = 4,$saveandprint=FALSE)
+        {
+            $image = self::image($frame, $pixelPerPoint, $outerFrame);
+
+            if ($filename === false) {
+//                Header("Content-type: image/png");
+                ImagePng($image);
+            } else {
+                if($saveandprint===TRUE){
+                    ImagePng($image, $filename);
+                    header("Content-type: image/png");
+                    ImagePng($image);
+                }else{
+                    ImagePng($image, $filename);
+                }
+            }
+
+            ImageDestroy($image);
+        }
     
         //----------------------------------------------------------------------
         public static function jpg($frame, $filename = false, $pixelPerPoint = 8, $outerFrame = 4, $q = 85) 
@@ -3285,7 +3305,7 @@
         }
         
         //----------------------------------------------------------------------
-        public function encodePNG($intext, $outfile = false,$saveandprint=false) 
+        public function encodePNG($intext, $outfile = false,$saveandprint=false)
         {
             try {
             
@@ -3305,6 +3325,36 @@
             
                 QRtools::log($outfile, $e->getMessage());
             
+            }
+        }
+
+        public function encodePNGGiveB64($intext, $outfile = false,$saveandprint=false)
+        {
+            try {
+
+                ob_start();
+                $tab = $this->encode($intext);
+                $err = ob_get_contents();
+                ob_end_clean();
+
+                if ($err != '')
+                    QRtools::log($outfile, $err);
+
+                $maxSize = (int)(QR_PNG_MAXIMUM_SIZE / (count($tab)+2*$this->margin));
+
+//                QRimage::png($tab, $outfile, min(max(1, $this->size), $maxSize), $this->margin,$saveandprint);
+                ob_start();
+                QRimage::pngNaz($tab, false, min(max(1, $this->size), $maxSize), $this->margin, $saveandprint);
+                $imageData = ob_get_contents();
+                ob_end_clean();
+
+                $base64Image = base64_encode($imageData);
+
+                return $base64Image;
+            } catch (Exception $e) {
+
+                QRtools::log($outfile, $e->getMessage());
+
             }
         }
     }

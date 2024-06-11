@@ -26,7 +26,6 @@ $select = <<<EOL
         , approval_status
         , vehicle_model
         , vehicle_plate
-        , vehicle_grant
         , user_id
         , approved_by
         , approval_date
@@ -55,7 +54,6 @@ mysqli_stmt_bind_result(
     $approval_status,
     $vehicle_model,
     $vehicle_plate,
-    $vehicle_grant,
     $user_id,
     $approved_by,
     $approval_date,
@@ -70,9 +68,44 @@ if (!mysqli_stmt_fetch($stmt)) {
 mysqli_stmt_close($stmt);
 
 if (isset($_GET['download']) && $_GET['download'] === '1') {
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="' . basename($vehicle_grant) . '"');
-    readfile(resolvePath($vehicle_grant));
+    // Prepare the SQL query to fetch the vehicle_grant
+    $select_grant = 'SELECT vehicle_grant FROM vehicles WHERE id = ?';
+    $stmt_grant = mysqli_prepare($conn, $select_grant);
+    mysqli_stmt_bind_param($stmt_grant, 'i', $id);
+
+    // Execute the query
+    mysqli_stmt_execute($stmt_grant);
+
+    // Bind the result to a variable
+    mysqli_stmt_bind_result($stmt_grant, $vehicle_grant);
+
+    // Fetch the result
+    if (!mysqli_stmt_fetch($stmt_grant)) {
+        to_url('vehicles.php');
+    }
+
+    // Close the statement
+    mysqli_stmt_close($stmt_grant);
+
+    // Create a temporary file
+    $temp_file = tmpfile();
+
+    // Write the content to the temporary file
+    fwrite($temp_file, $vehicle_grant);
+
+    // Get the path of the temporary file
+    $temp_file_path = stream_get_meta_data($temp_file)['uri'];
+
+    // Set headers
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="' . $vehicle_plate . '.pdf"');
+
+    // Read the file and send it to the user
+    readfile($temp_file_path);
+
+    // Close the temporary file
+    fclose($temp_file);
+
     exit();
 }
 
@@ -96,7 +129,7 @@ require_once 'layout_top.php';
         <?php if ($qr_filepath): ?>
             <div class="col-md-6">
                 <h3>QR Code</h3>
-                <img src="<?php echo htmlspecialchars($qr_filepath); ?>" alt="QR Code" class="img-fluid">
+                <img src="data:image/png;base64,<?php echo $qr_filepath; ?>" alt="QR Code" class="img-fluid">
             </div>
         <?php endif; ?>
     </div>

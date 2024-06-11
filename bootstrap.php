@@ -126,23 +126,6 @@ function get_base_url(): string
 
 function generate_qr_code(String $value, String $identifier): string
 {
-//    $url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . rawurlencode($value);
-//    $options = [
-//        'http' => [
-//            'method' =>'GET',
-//            'header' => 'content-type: applications/octet-stream'
-//        ]
-//    ];
-//    $context = stream_context_create($options);
-//    $response = file_get_contents($url, false, $context);
-//
-//    // If generateRandomString fails, it will return the identifier
-//    $filename = generateRandomString(8, $identifier) . '.png';
-//    $qr_code_filepath = dirname(__FILE__) . '/storage/qr_codes/' . $filename;
-//
-//    file_put_contents($qr_code_filepath, $response);
-//
-//    return extract_destination_path($qr_code_filepath);
     include_once ('phpqrcode/qrlib.php');
 
     $filename = generateRandomString(8, $identifier) . '.png';
@@ -187,4 +170,12 @@ function check_get_id() {
     if (!isset($_GET['id'])) {
         to_url('users.php');
     }
+}
+
+function qr_base64($value): ?string
+{
+    include_once ('phpqrcode/phpqrcode.php');
+
+    $enc = QRencode::factory(0, 3, 4);
+    return $enc->encodePNGGiveB64($value);
 }
