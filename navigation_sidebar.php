@@ -70,7 +70,7 @@
 
     <a class="nav-button btn" href="traffic_dashboard.php">
         <i class="bi bi-arrow-right"></i>
-        <div>Dashboard</div>
+        <div>Traffic Dashboard</div>
     </a>
 
     <a class="nav-button btn" href="trafic_summon.php">
