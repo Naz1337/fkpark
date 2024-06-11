@@ -1,4 +1,4 @@
-<<?php
+<?php
 
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
@@ -10,216 +10,128 @@ if (!isset($_SESSION['username'])) {
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+<?php
+// Fetching traffic summon data
+$stmt = $conn->prepare("
+    SELECT 
+        SUM(summon_points) AS total_summon_points, 
+        COUNT(DISTINCT student_id) AS total_students_summoned, 
+        SUM(CASE WHEN violation_type = 'Parking violation' THEN 1 ELSE 0 END) AS parking_violations,
+        SUM(CASE WHEN violation_type = 'Accident' THEN 1 ELSE 0 END) AS accidents_caused,
+        SUM(CASE WHEN violation_type = 'Campus traffic regulations' THEN 1 ELSE 0 END) AS campus_traffic_regulations
+    FROM traffic_summons
+");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$stmt->close();
+?>
 
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-        }
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Traffic Summon Summary"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 240,
+                yValueFormatString: "##0.00\"%\"",
+                indexLabel: "{label} {y}",
+                dataPoints: [
+                    { label: "Parking Violation", y: <?php echo $row['parking_violations']; ?> },
+                    { label: "Accident Caused", y: <?php echo $row['accidents_caused']; ?> },
+                    { label: "Campus Traffic Regulations", y: <?php echo $row['campus_traffic_regulations']; ?> }
+                ]
+            }]
+        });
+        chart.render();
+    }
+</script>
 
-        .btn {
-            display: inline-block;
-            padding: 6px 12px;
-            margin-bottom: 0;
-            font-size: 14px;
-            font-weight: normal;
-            line-height: 1.42857143;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            border: 1px solid transparent;
-            border-radius: 4px;
-        }
+<style>
+    body {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        font-family: Arial, sans-serif;
+    }
+    
+    .summary-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+    }
 
-        .btn-primary {
-            color: #fff;
-            background-color: #0275d8;
-            border-color: #0275d8;
-        }
+    .summary-card {
+        background-color: #34495e;
+        color: #ecf0f1;
+        border: 1px solid #2c3e50;
+        border-radius: 5px;
+        width: 50%;
+        margin: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
 
-        .btn-primary:hover {
-            background-color: #025aa5;
-            border-color: #025aa5;
-        }
+    .summary-card h3 {
+        margin-top: 0;
+    }
 
-        .btn-secondary {
-            color: #fff;
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
+    .summary-card p {
+        margin: 10px 0;
+    }
 
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
+    .btn-primary, .btn-secondary {
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
 
-        .btn-danger {
-            color: #fff;
-            background-color: #d9534f;
-            border-color: #d43f3a;
-        }
+    .btn-primary {
+        background-color: #3498db;
+    }
 
-        .btn-danger:hover {
-            background-color: #c9302c;
-            border-color: #ac2925;
-        }
+    .btn-secondary {
+        background-color: #e74c3c;
+    }
 
-        .view-button {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #fff;
-        }
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
 
-        .view-button:hover {
-            background-color: #e0a800;
-            border-color: #d39e00;
-        }
+    .btn-secondary:hover {
+        background-color: #c0392b;
+    }
 
-        .nav-button {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #000;
-            margin: 10px;
-        }
+    .container2 {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
 
-        .nav-button i {
-            margin-right: 8px;
-        }
+    .container2 a {
+        margin: 0 10px;
+    }
+</style>
 
-        .text-uppercase {
-            text-transform: uppercase;
-        }
+<h1>Traffic Summon Summary</h1>
 
-        .fw-bold {
-            font-weight: bold;
-        }
-
-        .mb-2 {
-            margin-bottom: 0.5rem;
-        }
-
-        .mt-5 {
-            margin-top: 3rem;
-        }
-
-        .mx-3 {
-            margin-left: 1rem;
-            margin-right: 1rem;
-        }
-
-        .dashboard-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-
-        .dashboard-card {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            width: 30%;
-            margin: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .dashboard-card h3 {
-            margin-top: 0;
-        }
-
-        .dashboard-card p {
-            margin: 10px 0;
-        }
-
-        .container2 {
-            display: flex;
-            justify-content: center;
-        }
-
-        .piechart {
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background-image: conic-gradient(pink 70deg, lightblue 0 235deg, orange 0);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    </style>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script>
-        window.onload = function () {
-            var summonData = [
-                { label: "Parking violation", y: 12 },
-                { label: "Accident caused", y: 3 },
-                { label: "Campus traffic regulations", y: 10 }
-            ];
-
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                title: {
-                    text: "Traffic Summon Summary"
-                },
-                data: [{
-                    type: "pie",
-                    startAngle: 240,
-                    yValueFormatString: "##0.00\"%\"",
-                    indexLabel: "{label} {y}",
-                    dataPoints: summonData
-                }]
-            });
-            chart.render();
-        }
-    </script>
-</head>
-<body>
-
-<h6 class="text-uppercase fw-bold mb-2 mt-5 mx-3">Traffic Summon</h6>
-
-<a class="nav-button btn" href="traffic_dashboard.php">
-    <i class="bi bi-arrow-right"></i>
-    <div>Dashboard</div>
-</a>
-
-<a class="nav-button btn" href="trafic_summon.php">
-    <i class="bi bi-arrow-right"></i>
-    <div>Traffic Summon Record</div>
-</a>
-
-<a class="nav-button btn" href="accident_report.php">
-    <i class="bi bi-arrow-right"></i>
-    <div>Accident Report</div>
-</a>
-
-<h1>Administrator Dashboard</h1>
-
-<div class="dashboard-container">
-    <!-- Traffic Summon Summary -->
-    <div class="dashboard-card">
-        <h3>Traffic Summon Summary</h3>
-        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-        <p>Total Summon Point: 350</p>
-        <p>Total Student Summoned: 25</p>
-        <p>Parking violation: 12</p>
-        <p>Accident caused: 3</p>
-        <p>Campus traffic regulations: 10</p>
-        <a href="traffic_summon_summary.php" class="btn btn-primary">Edit</a>
-        <a href="cancel_summary.php" class="btn btn-secondary">Cancel</a>
+<div class="summary-container">
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div class="summary-card">
+        <p>Total Summon Point: <?php echo $row['total_summon_points']; ?></p>
+        <p>Total Student Summoned: <?php echo $row['total_students_summoned']; ?></p>
+        <p>Parking violation: <?php echo $row['parking_violations']; ?></p>
+        <p>Accident caused: <?php echo $row['accidents_caused']; ?></p>
+        <p>Campus traffic regulations: <?php echo $row['campus_traffic_regulations']; ?></p>
+    </div>
+    <div class="container2">
+        <a href="edit_summon.php" class="btn btn-primary">Edit</a>
+        <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
     </div>
 </div>
 
@@ -227,6 +139,3 @@ if (!isset($_SESSION['username'])) {
 require_once 'layout_bottom.php';
 $conn->close();
 ?>
-
-</body>
-</html>
