@@ -23,9 +23,22 @@ try {
         die("The script has already been executed.");
     }
 
+
+
     // Connect to the database
     $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Drop the database if it already exists but in a way that is not using drop. just drop
+    // each table
+    $pdo->exec("DROP TABLE IF EXISTS merit_points");
+    $pdo->exec("DROP TABLE IF EXISTS parking_spaces");
+    $pdo->exec("DROP TABLE IF EXISTS parking_zones");
+    $pdo->exec("DROP TABLE IF EXISTS reservations");
+    $pdo->exec("DROP TABLE IF EXISTS summons");
+    $pdo->exec("DROP TABLE IF EXISTS users");
+    $pdo->exec("DROP TABLE IF EXISTS vehicles");
+
 
     // The SQL script to be executed
     $sql = <<<'SQL'
@@ -74,7 +87,7 @@ CREATE TABLE `merit_points` (
 CREATE TABLE `parking_spaces` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `zone_id` bigint(20) UNSIGNED NOT NULL,
-  `area` enum('A','B') NOT NULL,
+  `area` char(1) NOT NULL,
   `name` text NOT NULL,
   `is_available` tinyint(1) NOT NULL,
   `qr_code` text NOT NULL
@@ -84,23 +97,19 @@ CREATE TABLE `parking_spaces` (
 -- Dumping data for table `parking_spaces`
 --
 
-INSERT INTO `parking_spaces` (`id`, `zone_id`, `area`, `name`, `is_available`, `qr_code`) VALUES
-(1, 1, 'A', 'A1-1', 0, ''),
-(2, 1, 'A', 'A1-2', 0, '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `parking_status`
---
-
-CREATE TABLE `parking_status` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `parking_id` bigint(20) UNSIGNED NOT NULL,
-  `status` enum('open','close','maintenance') NOT NULL,
-  `start_time` datetime NOT NULL,
-  `end_time` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO parking_spaces (id, zone_id, area, name, is_available, qr_code) VALUES
+(1, 1, '1', 'A1-1', 1, ''),
+(2, 1, '2', 'A1-2', 1, ''),
+(3, 2, '1', 'A2-1', 1, ''),
+(4, 2, '2', 'A2-2', 1, ''),
+(5, 3, '1', 'A3-1', 1, ''),
+(6, 3, '2', 'A3-2', 1, ''),
+(7, 4, '1', 'B1-1', 1, ''),
+(8, 4, '2', 'B1-2', 1, ''),
+(9, 5, '1', 'B2-2', 1, ''),
+(10, 5, '2', 'B2-2', 1, ''),
+(11, 6, '1', 'B3-1', 1, ''),
+(12, 6, '2', 'B3-2', 1, '');
 
 -- --------------------------------------------------------
 
@@ -246,13 +255,6 @@ ALTER TABLE `parking_spaces`
   ADD KEY `fk_zone_id` (`zone_id`);
 
 --
--- Indexes for table `parking_status`
---
-ALTER TABLE `parking_status`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_parking_id` (`parking_id`);
-
---
 -- Indexes for table `parking_zones`
 --
 ALTER TABLE `parking_zones`
@@ -304,12 +306,6 @@ ALTER TABLE `parking_spaces`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `parking_status`
---
-ALTER TABLE `parking_status`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `parking_zones`
 --
 ALTER TABLE `parking_zones`
@@ -348,12 +344,6 @@ ALTER TABLE `vehicles`
 --
 ALTER TABLE `parking_spaces`
   ADD CONSTRAINT `fk_zone_id` FOREIGN KEY (`zone_id`) REFERENCES `parking_zones` (`id`);
-
---
--- Constraints for table `parking_status`
---
-ALTER TABLE `parking_status`
-  ADD CONSTRAINT `fk_parking_id` FOREIGN KEY (`parking_id`) REFERENCES `parking_spaces` (`id`);
 
 --
 -- Constraints for table `reservations`
