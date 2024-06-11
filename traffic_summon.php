@@ -1,12 +1,18 @@
 <?php
 
+session_start(); // Start the session
+
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
 if (!isset($_SESSION['username'])) {
-    header('location:login.php');
-    return;
+    header('Location: login.php');
+    exit;
 }
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 ?>
 
@@ -19,8 +25,7 @@ if (!isset($_SESSION['username'])) {
             width: 100%;
         }
 
-        th,
-        td {
+        th, td {
             padding: 8px;
             text-align: left;
         }
@@ -108,26 +113,30 @@ Total Summon Points: 10</p>
     <tbody>
         <?php
         $stmt = $conn->prepare("SELECT * FROM summons ORDER BY id DESC");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $counter = 1;
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $counter++ . "</td>";
-                echo "<td>" . htmlspecialchars($row['summon_id']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['qr_code']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['summon_date']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['violation_type']) . "</td>";
-                echo "<td>";
-                echo "<a href='view_summon.php?id=" . $row['id'] . "' class='btn btn-secondary view-button'>More</a>";
-                echo "</td>";
-                echo "</tr>";
+        if ($stmt) {
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $counter = 1;
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $counter++ . "</td>";
+                    echo "<td>" . htmlspecialchars($row['summon_id']) . "</td>";
+                    echo "<td><img src='" . htmlspecialchars($row['qr_code']) . "' alt='QR Code'></td>";
+                    echo "<td>" . htmlspecialchars($row['summon_date']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['violation_type']) . "</td>";
+                    echo "<td>";
+                    echo "<a href='traffic_summon_details.php?id=" . $row['id'] . "' class='btn btn-secondary view-button'>More</a>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6'>No data available</td></tr>";
             }
+            $stmt->close();
         } else {
-            echo "<tr><td colspan='6'>No data available</td></tr>";
+            echo "<tr><td colspan='6'>Error preparing the statement</td></tr>";
         }
-        $stmt->close();
         ?>
     </tbody>
 </table>
