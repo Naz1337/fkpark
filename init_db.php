@@ -32,8 +32,15 @@ try {
     // if in development, drop database fkpark
     if ($_SERVER['APP_ENV'] === 'development') {
         $pdo->exec("DROP DATABASE IF EXISTS fkpark");
-    }
 
+        // close the connection
+        $pdo = null;
+
+        // open a new one again but without data base and then create the fkpark database
+        $pdo = new PDO("mysql:host=$hostname", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->exec("CREATE DATABASE fkpark");
+    }
 
     // The SQL script to be executed
     $sql = <<<'SQL'
