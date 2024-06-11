@@ -28,7 +28,7 @@ if (!isset($_SESSION['username'])) {
 <h1>Add Parking Space</h1>
 
 <div style="margin-bottom: 20px;">
-    <a href="parking_zones.php" class="btn btn-primary">Back</a>
+    <a href="parking_spaces.php" class="btn btn-primary">Back</a>
 </div>
 
 <p><b>Please fill in the form below:</b></p>
@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </table>
     <button type="submit" class="btn btn-primary">Submit</button>
     <button type="reset" class="btn btn-primary">Reset</button>
-    <a href="parking_zones.php" class="btn btn-secondary">Cancel</a>
+    <a href="parking_spaces.php" class="btn btn-secondary">Cancel</a>
 </form>
 
 <?php

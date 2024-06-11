@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <h1>Edit Parking Space</h1>
 
 <div style="margin-bottom: 20px;">
-    <a href="parking_zones.php" class="btn btn-primary">Back</a>
+    <a href="parking_spaces.php" class="btn btn-primary">Back</a>
 </div>
 
 <p><b>Please fill in the form below to edit parking space information:</b></p>
@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </tbody>
     </table>
     <button type="submit" class="btn btn-primary">Save</button>
-    <a href="parking_zones.php" class="btn btn-secondary">Cancel</a>
+    <a href="parking_spaces.php" class="btn btn-secondary">Cancel</a>
 </form>
 
 <?php

@@ -36,6 +36,16 @@
         <div>Parking Zone</div>
     </a>
 
+    <a class="nav-button btn" href="parking_spaces.php">
+        <i class="bi bi-arrow-right"></i>
+        <div>Parking Space</div>
+    </a>
+
+    <a class="nav-button btn" href="add_parking_zone.php">
+        <i class="bi bi-arrow-right"></i>
+        <div>Add Parking Zone</div>
+    </a>
+
     <a class="nav-button btn" href="add_parking_space.php">
         <i class="bi bi-arrow-right"></i>
         <div>Add Parking Space</div>

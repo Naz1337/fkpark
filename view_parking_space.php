@@ -32,7 +32,7 @@ if (!isset($_SESSION['username'])) {
 <h1>View Parking Space</h1>
 
 <div style="margin-bottom: 20px;">
-    <a href="parking_zones.php" class="btn btn-primary">Back</a>
+    <a href="parking_spaces.php" class="btn btn-primary">Back</a>
 </div>
 
 <?php
