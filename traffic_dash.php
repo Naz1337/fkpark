@@ -11,7 +11,7 @@ function get_user_type() {
 
 if (!isset($_SESSION['username']) || !in_array(get_user_type(), ['admin', 'staff'])) {
     header('location:login.php');
-    return();
+    return;
 }
 
 // Fetch summon data
