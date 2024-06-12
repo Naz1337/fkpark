@@ -1,182 +1,158 @@
 <?php
+session_start();
 
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
 if (!isset($_SESSION['username'])) {
     header('location:login.php');
-    return;
+    exit;
 }
 
-?>
-
-<?php
-// Fetching available spaces count
-$stmt = $conn->prepare("SELECT COUNT(*) AS available_spaces FROM parking_spaces WHERE is_available = 1");
+// Fetch summon data
+$stmt = $conn->prepare("SELECT SUM(points) AS total_points, COUNT(*) AS total_students, SUM(parking_violation) AS parking_violation, SUM(accident_caused) AS accident_caused, SUM(traffic_regulation) AS traffic_regulation FROM summons");
 $stmt->execute();
 $result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$available_spaces = $row['available_spaces'];
-$stmt->close();
-
-// Fetching not available spaces count
-$stmt = $conn->prepare("SELECT COUNT(*) AS not_available_spaces FROM parking_spaces WHERE is_available != 1");
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$not_available_spaces = $row['not_available_spaces'];
+$data = $result->fetch_assoc();
 $stmt->close();
 ?>
 
-<script>
-    window.onload = function () {
-        var availableSpaces = <?php echo $available_spaces; ?>;
-        var notAvailableSpaces = <?php echo $not_available_spaces; ?>;
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Traffic Summon Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
 
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            title: {
-                text: "Parking Space Status"
-            },
-            data: [{
-                type: "pie",
-                startAngle: 240,
-                yValueFormatString: "##0.00\"%\"",
-                indexLabel: "{label} {y}",
-                dataPoints: [
-                    { label: "Available", y: availableSpaces },
-                    { label: "Not Available", y: notAvailableSpaces }
-                ]
-            }]
-        });
-        chart.render();
-    }
-</script>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
 
-<style>
-    .dashboard-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        margin: 20px 0;
-    }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-    .dashboard-card {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        width: 30%;
-        margin: 10px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+        p {
+            margin: 5px 0;
+        }
 
-    .dashboard-card h3 {
-        margin-top: 0;
-    }
+        .piechart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            margin: 20px 0;
+        }
 
-    .dashboard-card p {
-        margin: 10px 0;
-    }
+        .piechart {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #4caf50 0 <?php echo round($data['parking_violation'] / $data['total_students'] * 360); ?>deg,
+                #f44336 <?php echo round($data['parking_violation'] / $data['total_students'] * 360); ?>deg <?php echo round(($data['parking_violation'] + $data['accident_caused']) / $data['total_students'] * 360); ?>deg,
+                #ff9800 <?php echo round(($data['parking_violation'] + $data['accident_caused']) / $data['total_students'] * 360); ?>deg <?php echo round(($data['parking_violation'] + $data['accident_caused'] + $data['traffic_regulation']) / $data['total_students'] * 360); ?>deg,
+                #3f51b5 <?php echo round(($data['parking_violation'] + $data['accident_caused'] + $data['traffic_regulation']) / $data['total_students'] * 360); ?>deg 360deg
+            );
+        }
 
-    .btn-primary:hover {
-        color: #fff;
-        background-color: #4caf50;
-        border-color: #269abc;
-    }
+        .summary {
+            margin: 20px;
+            text-align: center;
+        }
 
-    .btn-secondary:hover {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
+        .summary p {
+            margin: 10px 0;
+        }
 
-    .container2 {
-        display: flex;
-        justify-content: center;
-    }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-    .piechart {
-        width: 400px;
-        height: 400px;
-        border-radius: 50%;
-        background-image: conic-gradient(pink 70deg, lightblue 0 235deg, orange 0);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
 
-<h1>Administrator Dashboard</h1>
+        .btn-primary {
+            background-color: #0275d8;
+            color: #fff;
+        }
 
-<div class="dashboard-container">
-    <!-- Total Summon Counter Summary -->
-    <div class="dashboard-card">
-        <h3>Total Summon</h3>
-        <?php
-        $stmt = $conn->prepare("
-            SELECT 
-                COUNT(*) AS total_zones,
-                SUM(CASE WHEN status = 'Open' THEN 1 ELSE 0 END) AS open_zones,
-                SUM(CASE WHEN status = 'Closed' THEN 1 ELSE 0 END) AS closed_zones,
-                SUM(CASE WHEN status = 'Under maintenance' THEN 1 ELSE 0 END) AS maintenance_zones
-            FROM parking_zones
-        ");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-        ?>
-        <p>Total Zones: <?php echo $row['total_zones']; ?></p>
-        <p>Open: <?php echo $row['open_zones']; ?></p>
-        <p>Closed: <?php echo $row['closed_zones']; ?></p>
-        <p>Under Maintenance: <?php echo $row['maintenance_zones']; ?></p>
-        <a href="traffic_summon.php" class="btn btn-primary">Manage Traffic Summon</a>
+        .btn-primary:hover {
+            background-color: #025aa5;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .btn-danger {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c9302c;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Traffic Summon Summary</h1>
+    <p>Hello, Admin</p>
+    <p>AD21001</p>
+    <p>Date: <?php echo date('d/m/Y'); ?></p>
+
+    <div class="piechart-container">
+        <div class="piechart"></div>
     </div>
 
-    <!-- Summon Type Summary -->
-    <div class="dashboard-card">
-        <h3>Total Summon Type</h3>
-        <p>Total Spaces:
-            <?php
-            $stmt = $conn->prepare("SELECT COUNT(*) AS total_spaces FROM parking_spaces");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            echo $row['total_spaces'];
-            $stmt->close();
-            ?>
-        </p>
-        <p>Available:
-            <?php
-            $stmt = $conn->prepare("SELECT COUNT(*) AS available_spaces FROM parking_spaces WHERE is_available = 1");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            echo $row['available_spaces'];
-            $stmt->close();
-            ?>
-        </p>
-        <p>Not Available:
-            <?php
-            $stmt = $conn->prepare("SELECT COUNT(*) AS not_available_spaces FROM parking_spaces WHERE is_available != 1");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            echo $row['not_available_spaces'];
-            $stmt->close();
-            ?>
-        </p>
-        <a href="accident_report.php" class="btn btn-primary">Manage Accident Report</a>
+    <div class="summary">
+        <p>Total Summon Point: <?php echo $data['total_points']; ?></p>
+        <p>Total Student Summoned: <?php echo $data['total_students']; ?></p>
+        <p>Parking Violation: <?php echo $data['parking_violation']; ?></p>
+        <p>Accident Caused: <?php echo $data['accident_caused']; ?></p>
+        <p>Campus Traffic Regulations: <?php echo $data['traffic_regulation']; ?></p>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-primary" onclick="location.href='traffic_summon.php'">Edit</button>
+        <button class="btn btn-secondary" onclick="location.href='accident_report.php'">Cancel</button>
+    </div>
+
+    <div class="btn-back">
+        <button class="btn btn-danger" onclick="history.back();">Back</button>
     </div>
 </div>
-
-<div class="container2">
-    <div class="piechart"></div>
-</div>
-
-
 
 <?php
 require_once 'layout_bottom.php';
 $conn->close();
 ?>
+
+</body>
+</html>
