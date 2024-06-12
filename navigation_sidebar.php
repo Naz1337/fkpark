@@ -70,7 +70,7 @@
 
     <h6 class="text-uppercase fw-bold mb-2 mt-5 mx-3">Traffic Summon</h6>
 
-    <a class="nav-button btn" href="trafic_enforcement.php">
+    <a class="nav-button btn" href="traffic_enforcement.php">
         <i class="bi bi-arrow-right"></i>
         <div>Traffic Enforcement</div>
     </a>
