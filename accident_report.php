@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST['description'];
 
     // Assuming you have a table named 'accident_reports' in your database
+    $conn = new mysqli('localhost', 'root', 'test');
     $query = "INSERT INTO accident_reports (vehicle_id, vehicle_number, student_id, description) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ssss", $vehicle_id, $vehicle_number, $student_id, $description);
@@ -27,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Error: " . $stmt->error;
     }
 
+    $stmt->close();
     $stmt->close();
 }
 ?>
