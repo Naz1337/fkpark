@@ -23,52 +23,7 @@ function generateSummonID($id) {
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Traffic Summon Records</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 6px 12px;
-            margin-bottom: 0;
-            font-size: 14px;
-            font-weight: normal;
-            line-height: 1.42857143;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            color: #fff;
-            background-color: #0275d8;
-            border-color: #0275d8;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            background-color: #025aa5;
-            border-color: #025aa5;
-        }
-    </style>
-</head>
-<body>
+<link rel="stylesheet" href="styles/module2/parking_zones.css">
 
 <h1>Traffic Summon Records</h1>
 
