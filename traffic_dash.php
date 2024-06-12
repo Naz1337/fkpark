@@ -109,7 +109,7 @@ $stmt->close();
 <h1>Administrator Dashboard</h1>
 
 <div class="dashboard-container">
-    <!-- Parking Zones Summary -->
+    <!-- Total Summon Counter Summary -->
     <div class="dashboard-card">
         <h3>Total Summon</h3>
         <?php
@@ -133,7 +133,7 @@ $stmt->close();
         <a href="traffic_summon.php" class="btn btn-primary">Manage Traffic Summon</a>
     </div>
 
-    <!-- Parking Spaces Summary -->
+    <!-- Summon Type Summary -->
     <div class="dashboard-card">
         <h3>Total Summon Type</h3>
         <p>Total Spaces:
