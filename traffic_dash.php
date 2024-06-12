@@ -4,9 +4,14 @@ session_start();
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
 
-if (!isset($_SESSION['username'])) {
+// Function to get user type from session
+function get_user_type() {
+    return $_SESSION['user_type'] ?? null;
+}
+
+if (!isset($_SESSION['username']) || !in_array(get_user_type(), ['admin', 'staff'])) {
     header('location:login.php');
-    return;
+    return();
 }
 
 // Fetch summon data
@@ -99,13 +104,12 @@ $stmt->close();
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
 </head>
 <body>
 
 <div class="container">
     <h1>Unit Keselamatan Dashboard</h1>
-    <p>Hello, Staff</p>
+    <p>Hello, <?php echo ucfirst(get_user_type()); ?></p>
     <p>AD21001</p>
     <p>Date: <?php echo date('d/m/Y'); ?></p>
 
@@ -158,3 +162,4 @@ $conn->close();
 
 </body>
 </html>
+
