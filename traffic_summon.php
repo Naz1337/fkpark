@@ -1,6 +1,5 @@
 <?php
-
-session_start(); // Start the session
+session_start();
 
 require_once 'layout_top.php';
 require_once 'database_util.php'; // Include the database connection file
@@ -10,15 +9,24 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Fetch summons from the database
+$stmt = $conn->prepare("SELECT id, vehicle_id, summon_date, qr_code, username, violation_type, merit_points FROM summons");
+$stmt->execute();
+$result = $stmt->get_result();
+$summons = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+// Function to generate random summon ID
+function generateSummonID($id) {
+    return "SM-FKB321-" . date('y') . "-" . str_pad($id, 6, '0', STR_PAD_LEFT);
+}
 
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Traffic Summon Records</title>
     <style>
         table {
             border-collapse: collapse;
@@ -28,6 +36,11 @@ error_reporting(E_ALL);
         th, td {
             padding: 8px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
 
         .btn {
@@ -43,99 +56,58 @@ error_reporting(E_ALL);
             cursor: pointer;
             border: 1px solid transparent;
             border-radius: 4px;
-        }
-
-        .btn-primary {
             color: #fff;
             background-color: #0275d8;
             border-color: #0275d8;
+            text-decoration: none;
         }
 
-        .btn-primary:hover {
+        .btn:hover {
             background-color: #025aa5;
             border-color: #025aa5;
-        }
-
-        .btn-secondary {
-            color: #fff;
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
-
-        .btn-danger {
-            color: #fff;
-            background-color: #d9534f;
-            border-color: #d43f3a;
-        }
-
-        .btn-danger:hover {
-            background-color: #c9302c;
-            border-color: #ac2925;
-        }
-
-        .view-button {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #fff;
-        }
-
-        .view-button:hover {
-            background-color: #e0a800;
-            border-color: #d39e00;
         }
     </style>
 </head>
 <body>
 
-<h1>Traffic Summon</h1>
-<p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
+<h1>Traffic Summon Records</h1>
 
-<h2>Traffic Summon Record</h2>
-
-<table border="1" class="table table-bordered">
+<table>
     <thead>
         <tr>
             <th>No.</th>
             <th>Summon ID</th>
             <th>QR Code</th>
-            <th>Date & Time</th>
-            <th>Reason</th>
+            <th>Date and Time</th>
+            <th>Reasons</th>
+            <th>Merit Points</th>
             <th>Details</th>
         </tr>
     </thead>
     <tbody>
-        <?php
-        $stmt = $conn->prepare("SELECT * FROM summons ORDER BY id DESC");
-        if ($stmt) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                $counter = 1;
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $counter++ . "</td>";
-                    echo "<td>" . htmlspecialchars($row['summon_id']) . "</td>";
-                    echo "<td><img src='" . htmlspecialchars($row['qr_code']) . "' alt='QR Code'></td>";
-                    echo "<td>" . htmlspecialchars($row['summon_date']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['violation_type']) . "</td>";
-                    echo "<td>";
-                    echo "<a href='traffic_summon_details.php?id=" . $row['id'] . "' class='btn btn-secondary view-button'>More</a>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='6'>No data available</td></tr>";
-            }
-            $stmt->close();
-        } else {
-            echo "<tr><td colspan='6'>Error preparing the statement</td></tr>";
-        }
-        ?>
+        <?php if (count($summons) > 0): ?>
+            <?php foreach ($summons as $index => $summon): ?>
+                <tr>
+                    <td><?php echo $index + 1; ?></td>
+                    <td><?php echo generateSummonID($summon['id']); ?></td>
+                    <td>
+                        <a href="traffic_summon_details.php?summon_id=<?php echo urlencode($summon['id']); ?>">
+                            <img src="qr_code_generator.php?text=<?php echo urlencode(generateSummonID($summon['id'])); ?>" alt="QR Code" width="50">
+                        </a>
+                    </td>
+                    <td><?php echo htmlspecialchars($summon['summon_date']); ?></td>
+                    <td><?php echo htmlspecialchars($summon['violation_type']); ?></td>
+                    <td><?php echo htmlspecialchars($summon['merit_points']); ?></td>
+                    <td>
+                        <a href="traffic_summon_details.php?summon_id=<?php echo htmlspecialchars($summon['id']); ?>" class="btn">More</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="7">No records found.</td>
+            </tr>
+        <?php endif; ?>
     </tbody>
 </table>
 
