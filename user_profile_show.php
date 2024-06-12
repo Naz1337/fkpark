@@ -44,7 +44,7 @@ require_once 'layout_top.php';
     <div class="mb-4">
         <h3 class="mb-4">User Information</h3>
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
                         <label for="" class="form-label">Username: </label>
@@ -56,7 +56,7 @@ require_once 'layout_top.php';
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
                         <label for="" class="form-label">User Type: </label>
@@ -73,7 +73,7 @@ require_once 'layout_top.php';
     <div class="mb-4">
         <h3 class="mb-4">Personal Information</h3>
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
                         <label for="" class="form-label">First Name: </label>
@@ -85,7 +85,7 @@ require_once 'layout_top.php';
                     </div>
                 </div>
             </div>
-            <div class="mb-3 col-6">
+            <div class="mb-3 col-md-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
                         <label for="" class="form-label">Last Name: </label>
@@ -97,7 +97,7 @@ require_once 'layout_top.php';
                     </div>
                 </div>
             </div>
-            <div class="mb-3 col-6">
+            <div class="mb-3 col-md-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
                         <label for="" class="form-label">Contact Number: </label>
@@ -109,7 +109,7 @@ require_once 'layout_top.php';
                     </div>
                 </div>
             </div>
-            <div class="mb-3 col-6">
+            <div class="mb-3 col-md-6">
                 <div class="row">
                     <div class="col-3 col-form-label">
                         <label for="" class="form-label">Address: </label>
@@ -123,12 +123,13 @@ require_once 'layout_top.php';
         </div>
     </div>
     <div class="d-flex justify-content-center gap-3">
-        <a href="vehicles.php?user_id=<?= $id ?>" class="btn btn-primary">View Cars</a>
-        <a href="user_edit.php?id=<?= $id ?>" class="btn btn-outline-primary">Edit</a>
-        <?php if (get_user_type() == 'admin'): ?>
-            <a href="user_delete.php?id=<?= $id ?>" class="btn btn-outline-danger">Delete</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="vehicles.php?user_id=<?= $id ?>" class="btn btn-primary">View Cars</a>
+            <a href="user_edit.php?id=<?= $id ?>" class="btn btn-outline-primary">Edit</a>
+            <?php if (get_user_type() == 'admin'): ?>
+                <a href="user_delete.php?id=<?= $id ?>" class="btn btn-outline-danger">Delete</a>
+            <?php endif; ?>
         <?php endif; ?>
-
     </div>
 </div>
 

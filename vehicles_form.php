@@ -23,7 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // make car link
     $base = get_base_url();
-    $uri = '/fkpark/vehicle_show.php?plate=' . $vehicle_plate;
+    if ($_SERVER['APP_ENV'] !== 'development')
+        $uri = '/CB22159/fkpark/vehicle_show.php?plate=' . $vehicle_plate;
+    else
+        $uri = '/fkpark/vehicle_show.php?plate=' . $vehicle_plate;
 
     $qr_code = qr_base64($base . $uri);
 //    $qr_code = generate_qr_code($base . $uri, $vehicle_plate);
