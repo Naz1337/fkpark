@@ -141,6 +141,7 @@ function generateSummonID($id) {
 <p>
     <button type="button" class="btn btn-primary" onclick="location.href='traffic_enforcement.php'">Total Summon Enforcement</button>
     <button type="button" class="btn btn-danger" onclick="location.href='accident_report.php'">Accident Report</button>
+    <button type="button" class="btn btn-danger" onclick="location.href='add_traffic_summon.php'">Accident Report</button>
 </p>
 
 <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
