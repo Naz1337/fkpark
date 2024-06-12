@@ -5,25 +5,35 @@ require_once 'database_util.php'; // Include the database connection file
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
 
-    // SQL query to delete the parking zone
-    $sql = "DELETE FROM parking_zones WHERE id = ?";
+    // Begin transaction
+    $conn->begin_transaction();
 
-    // Prepare the SQL statement
-    $stmt = $conn->prepare($sql);
+    try {
+        // Delete related rows in parking_spaces
+        $sql1 = "DELETE FROM parking_spaces WHERE zone_id = ?";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->bind_param("i", $id);
+        $stmt1->execute();
+        $stmt1->close();
 
-    // Bind parameters
-    $stmt->bind_param("i", $id);
+        // Delete the parking zone
+        $sql2 = "DELETE FROM parking_zones WHERE id = ?";
+        $stmt2 = $conn->prepare($sql2);
+        $stmt2->bind_param("i", $id);
+        $stmt2->execute();
+        $stmt2->close();
 
-    // Execute the statement
-    if ($stmt->execute()) {
+        // Commit transaction
+        $conn->commit();
+
         // Redirect back to parking_zones.php after successful deletion
         header("Location: parking_zones.php");
-    } else {
-        echo "Error: " . $stmt->error;
-    }
+    } catch (mysqli_sql_exception $exception) {
+        // Rollback transaction on error
+        $conn->rollback();
 
-    // Close the statement
-    $stmt->close();
+        echo "Error: " . $exception->getMessage();
+    }
 }
 
 // Close the database connection
