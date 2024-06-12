@@ -119,7 +119,7 @@ function generateSummonID($id) {
                     <td><?php echo generateSummonID($summon['id']); ?></td>
                     <td>
                         <a href="traffic_summon_details.php?summon_id=<?php echo urlencode($summon['id']); ?>">
-                            <img src="qr_code_generator.php?text=<?php echo urlencode(generateSummonID($summon['id'])); ?>" alt="QR Code" width="50">
+                            <img src="traffic_summon_qr.php?text=<?php echo urlencode(generateSummonID($summon['id'])); ?>" alt="QR Code" width="50">
                         </a>
                     </td>
                     <td><?php echo htmlspecialchars($summon['summon_date']); ?></td>
