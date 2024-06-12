@@ -108,9 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <h1>Traffic Summon</h1>
-<p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?><br>
-CD21052<br>
-Total Summon Points: 10</p>
+<p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
 
 <h2>Accident Report</h2>
 
