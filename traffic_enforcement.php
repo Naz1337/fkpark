@@ -73,9 +73,7 @@ if (!isset($_SESSION['username'])) {
 </style>
 
 <h1>Traffic Summon</h1>
-<p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?><br>
-CD21052<br>
-Total Summon Points: 10</p>
+<p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
 
 <h2>Total Summon Enforcement</h2>
 
