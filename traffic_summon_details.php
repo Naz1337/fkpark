@@ -10,10 +10,10 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Assuming you have a way to get the summon details from the database
-$summon_id = "SM-FKB321-04-20-001"; // This should be dynamically fetched based on user selection or other logic
-$query = "SELECT * FROM summons WHERE summon_id = ?";
+$summon_id = 1; // This should be dynamically fetched based on user selection or other logic
+$query = "SELECT * FROM summons WHERE id = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("s", $summon_id);
+$stmt->bind_param("i", $summon_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $summon = $result->fetch_assoc();
@@ -22,6 +22,7 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Traffic Summon Details</title>
     <style>
@@ -86,56 +87,60 @@ $stmt->close();
         }
     </style>
 </head>
+
 <body>
-<h1>Traffic Summon</h1>
-<p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
+    <h1>Traffic Summon</h1>
+    <p>Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
 
-<h2>Record Details</h2>
+    <h2>Record Details</h2>
 
-<table border="1" class="table table-bordered">
-    <tbody>
-        <tr>
-            <td>Student Name:</td>
-            <td><?php echo htmlspecialchars($_SESSION['username']); ?></td>
-            <td rowspan="6">
-                QR Code:
-                <!-- QR Code generation -->
-                <img src='traffic_summon_qr.php?text="=<?php echo urlencode("summon_id=".$summon_id); ?>" alt="QR Code">
-            </td>
-        <tr>
-            <td>Summon ID:</td>
-            <td><?php echo htmlspecialchars($summon['summon_id']); ?></td>
-        </tr>
-        <tr>
-            <td>Vehicle Number:</td>
-            <td><?php echo htmlspecialchars($summon['vehicle_number']); ?></td>
-        </tr>
-        <tr>
-            <td>Date & Time:</td>
-            <td><?php echo htmlspecialchars($summon['date_time']); ?></td>
-        </tr>
-        <tr>
-            <td>Reason:</td>
-            <td><?php echo htmlspecialchars($summon['reason']); ?></td>
-        </tr>
-        <tr>
-            <td>Demerit:</td>
-            <td><?php echo htmlspecialchars($summon['demerit_points']); ?> Points</td>
-        </tr>
-        <tr>
-            <td>Status:</td>
-            <td colspan="2">Warning Given(&gt;20 Points)</td>
-        </tr>
-    </tbody>
-</table>
+    <table border="1" class="table table-bordered">
+        <tbody>
+            <tr>
+                <td>Student Name:</td>
+                <td><?php echo htmlspecialchars($summon['username']); ?></td>
+                <td rowspan="6">
+                    QR Code:
+                    <!-- QR Code generation -->
+                    <img src='traffic_summon_qr.php?text=<?php echo urlencode("summon_id=" . $summon_id); ?>'
+                        alt="QR Code">
+                </td>
+            </tr>
+            <tr>
+                <td>Summon ID:</td>
+                <td><?php echo htmlspecialchars($summon['id']); ?></td>
+            </tr>
+            <tr>
+                <td>Vehicle Number:</td>
+                <td><?php echo htmlspecialchars($summon['vehicle_id']); ?></td>
+            </tr>
+            <tr>
+                <td>Date & Time:</td>
+                <td><?php echo htmlspecialchars($summon['summon_date']); ?></td>
+            </tr>
+            <tr>
+                <td>Reason:</td>
+                <td><?php echo htmlspecialchars($summon['violation_type']); ?></td>
+            </tr>
+            <tr>
+                <td>Demerit:</td>
+                <td><?php echo htmlspecialchars($summon['merit_points']); ?> Points</td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td colspan="2">Warning Given(&gt;20 Points)</td>
+            </tr>
+        </tbody>
+    </table>
 
-<button type="button" class="btn btn-primary" onclick="location.href='update_summon.php?id=<?php echo urlencode($summon_id); ?>'">Update</button>
-<button type="button" class="btn btn-secondary" onclick="location.href='traffic_summon.php'">Cancel</button>
+    <button type="button" class="btn btn-primary"
+        onclick="location.href='update_summon.php?id=<?php echo urlencode($summon_id); ?>'">Update</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='traffic_summon.php'">Cancel</button>
 
-<?php
-require_once 'layout_bottom.php';
-$conn->close();
-?>
+    <?php
+    require_once 'layout_bottom.php';
+    $conn->close();
+    ?>
 </body>
-</html>
 
+</html>
