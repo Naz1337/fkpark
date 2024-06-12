@@ -23,7 +23,79 @@ function generateSummonID($id) {
 
 ?>
 
-<link rel="stylesheet" href="styles/module2/parking_zones.css">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accident Report</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: auto;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #0275d8;
+            border-color: #0275d8;
+        }
+
+        .btn-primary:hover {
+            background-color: #025aa5;
+            border-color: #025aa5;
+        }
+
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        .btn-danger {
+            color: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+        }
+
+        .btn-danger:hover {
+            background-color: #c9302c;
+            border-color: #ac2925;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var message = "<?php echo $message; ?>";
+            if (message) {
+                alert(message);
+            }
+        }
+    </script>
+</head>
+<body>
 
 <h1>Traffic Summon Records</h1>
 
