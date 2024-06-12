@@ -20,7 +20,7 @@ $stmt->close();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Traffic Summon Summary</title>
+    <title>Unit Keselamatan Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,26 +40,6 @@ $stmt->close();
 
         p {
             margin: 5px 0;
-        }
-
-        .piechart-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 400px;
-            margin: 20px 0;
-        }
-
-        .piechart {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: conic-gradient(
-                #4caf50 0 <?php echo round($data['parking_violation'] / $data['total_students'] * 360); ?>deg,
-                #f44336 <?php echo round($data['parking_violation'] / $data['total_students'] * 360); ?>deg <?php echo round(($data['parking_violation'] + $data['accident_caused']) / $data['total_students'] * 360); ?>deg,
-                #ff9800 <?php echo round(($data['parking_violation'] + $data['accident_caused']) / $data['total_students'] * 360); ?>deg <?php echo round(($data['parking_violation'] + $data['accident_caused'] + $data['traffic_regulation']) / $data['total_students'] * 360); ?>deg,
-                #3f51b5 <?php echo round(($data['parking_violation'] + $data['accident_caused'] + $data['traffic_regulation']) / $data['total_students'] * 360); ?>deg 360deg
-            );
         }
 
         .summary {
@@ -118,18 +98,16 @@ $stmt->close();
             text-align: center;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
 
 <div class="container">
-    <h1>Traffic Summon Summary</h1>
-    <p>Hello, Admin</p>
+    <h1>Unit Keselamatan Dashboard</h1>
+    <p>Hello, Staff</p>
     <p>AD21001</p>
     <p>Date: <?php echo date('d/m/Y'); ?></p>
-
-    <div class="piechart-container">
-        <div class="piechart"></div>
-    </div>
 
     <div class="summary">
         <p>Total Summon Point: <?php echo $data['total_points']; ?></p>
@@ -137,6 +115,10 @@ $stmt->close();
         <p>Parking Violation: <?php echo $data['parking_violation']; ?></p>
         <p>Accident Caused: <?php echo $data['accident_caused']; ?></p>
         <p>Campus Traffic Regulations: <?php echo $data['traffic_regulation']; ?></p>
+    </div>
+
+    <div class="piechart-container" style="display: flex; justify-content: center; align-items: center; height: 400px; margin: 20px 0;">
+        <canvas id="pieChart" width="400" height="400"></canvas>
     </div>
 
     <div class="buttons">
@@ -153,6 +135,26 @@ $stmt->close();
 require_once 'layout_bottom.php';
 $conn->close();
 ?>
+
+<script>
+    const data = {
+        labels: ['Parking Violation', 'Accident Caused', 'Traffic Regulation'],
+        datasets: [{
+            data: [<?php echo $data['parking_violation']; ?>, <?php echo $data['accident_caused']; ?>, <?php echo $data['traffic_regulation']; ?>],
+            backgroundColor: ['#4caf50', '#f44336', '#ff9800'],
+        }]
+    };
+
+    const config = {
+        type: 'pie',
+        data: data,
+    };
+
+    const pieChart = new Chart(
+        document.getElementById('pieChart'),
+        config
+    );
+</script>
 
 </body>
 </html>
