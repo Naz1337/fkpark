@@ -85,8 +85,8 @@ if (isset($_GET['id'])) {
         echo "<tr>";
         echo "<th>QR code:</th>";
         echo "<td>
-                <a href='view_parking_space_qr.php?id=" . urlencode($row['space_id']) . "'>
-                    <img src='parking_space_qr.php?text=" . urlencode($row['space_id']) . "' alt='QR Code'>
+                <a href='view_qr_parking.php?id=" . urlencode($row['space_id']) . "'>
+                    <img src='generate_qr_parking.php?text=" . urlencode($row['space_id']) . "' alt='QR Code'>
                 </a>
               </td>";
         echo "</tr>";
