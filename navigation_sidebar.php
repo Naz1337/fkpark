@@ -75,7 +75,7 @@
             <i class="bi bi-arrow-right"></i>
             <div>Traffic Dashboard</div>
         </a>
-    
+    <?php endif; ?>
     <a class="nav-button btn" href="trafic_enforcement.php">
         <i class="bi bi-arrow-right"></i>
         <div>Traffic Enforcement</div>
