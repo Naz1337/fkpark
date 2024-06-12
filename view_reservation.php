@@ -1,10 +1,10 @@
 <?php
 require_once 'layout_top.php';
 
-if (!isset($_SESSION['username'])) {
-    header('location:login.php');
-    return;
-}
+//if (!isset($_SESSION['username'])) {
+//    header('location:login.php');
+//    return;
+//}
 
 require_once 'database_util.php';
 global $conn;
